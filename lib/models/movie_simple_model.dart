@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cinerating/shared/env.dart';
+
 class MovieSimple {
   bool? adult;
   String? backdropPath;
@@ -72,7 +74,7 @@ class MovieSimple {
 
   factory MovieSimple.fromMap(Map<String, dynamic> json) => MovieSimple(
     adult: json["adult"],
-    backdropPath: json["backdrop_path"],
+    backdropPath: Environment.mediaUrl + json["backdrop_path"],
     genreIds: json["genre_ids"] == null
         ? []
         : List<int>.from(json["genre_ids"]!.map((x) => x)),
@@ -81,7 +83,7 @@ class MovieSimple {
     originalTitle: json["original_title"],
     overview: json["overview"],
     popularity: json["popularity"]?.toDouble(),
-    posterPath: json["poster_path"],
+    posterPath: Environment.mediaUrl + json["poster_path"],
     releaseDate: json["release_date"] == null
         ? null
         : DateTime.parse(json["release_date"]),
