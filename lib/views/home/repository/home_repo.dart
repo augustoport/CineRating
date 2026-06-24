@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
-import '../../shared/env.dart';
-import '../models/movie_simple_model.dart';
+import '../../../shared/env.dart';
+import '../../../models/movie_simple_model.dart';
 
 class HomeRepository {
   final url = Environment.apiBaseUrl;

@@ -1,4 +1,4 @@
-import '../models/movie_simple_model.dart';
+import '../../../models/movie_simple_model.dart';
 import '../repository/home_repo.dart';
 
 class HomeController {
