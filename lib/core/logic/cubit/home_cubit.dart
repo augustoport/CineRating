@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+
 import '../../../models/movie_simple_model.dart';
 import '../../services/movie_service.dart';
 

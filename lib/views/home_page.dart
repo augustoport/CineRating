@@ -13,11 +13,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   HomeCubit homeCubit = HomeCubit();
+  TextEditingController _searchController = TextEditingController();
 
   @override
   initState() {
     Future.microtask(() async {
-      // await controller.getMovies();
       homeCubit.getMovies();
     });
     super.initState();
@@ -26,9 +26,32 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: (Colors.black),
       appBar: AppBar(title: const Text('Filmes'), centerTitle: true),
       body: Column(
         children: [
+          Container(
+            margin: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.white),
+              borderRadius: BorderRadius.circular(20),
+
+            ),
+            child: TextField(
+              decoration: InputDecoration(
+                hint: Row(
+                  children: [
+                    Icon(Icons.search),
+                    Text("Pesquisar")
+                  ],
+                ),
+                contentPadding: EdgeInsets.only(left: 15),
+                border: InputBorder.none,
+              ),
+              controller: _searchController,
+            ),
+          ),
           BlocBuilder(
             bloc: homeCubit,
             builder: (context, state) {
@@ -36,14 +59,15 @@ class _HomePageState extends State<HomePage> {
                 return Expanded(
                   child: RefreshIndicator(
                     onRefresh: () => homeCubit.getMovies(),
-                    child: ListView.builder(
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                       itemCount: state.movies?.length ?? 0,
                       itemBuilder: (context, index) {
                         final movie = state.movies![index];
                         return MovieCard(
                           photo: movie.posterPath,
                           title: movie.title,
-                          description: movie.overview,
+                          vote: movie.voteAverage.toString(),
                         );
                       },
                     ),
@@ -73,7 +97,7 @@ class _HomePageState extends State<HomePage> {
               right: 10,
               top: 10,
             ),
-            decoration: BoxDecoration(color: Colors.deepPurple),
+            decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.deepPurple, Colors.black], begin: AlignmentGeometry.topCenter, end: AlignmentGeometry.bottomCenter)),
             child: Row(
               children: [
                 Text(

@@ -3,33 +3,36 @@ import 'package:flutter/material.dart';
 class MovieCard extends StatelessWidget {
   final String? photo;
   final String? title;
-  final String? description;
-  const MovieCard({super.key, this.photo, this.title, this.description});
+  final String? vote;
+  const MovieCard({super.key, this.photo, this.title, this.vote});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.black)),
+        gradient: LinearGradient(colors: [Colors.deepPurple, Colors.black], begin: AlignmentGeometry.topCenter, end: AlignmentGeometry.bottomCenter),
+        border: Border.all(color: Colors.black),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (photo != null) Flexible(flex: 1, child: Image.network(photo!)),
-          SizedBox(width: 10),
-          Flexible(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title ?? "N/A"),
-                SizedBox(height: 20),
-                Text(
-                  description ?? "N/A",
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
+          if (photo != null) Expanded(child: Image.network(photo!)),
+          Text(
+            title ?? "N/A",
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.star, color: Colors.amber),
+              Text(
+                vote ?? "N/A",
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
           ),
         ],
       ),
