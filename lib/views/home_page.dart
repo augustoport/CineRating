@@ -36,20 +36,19 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
               border: Border.all(color: Colors.white),
               borderRadius: BorderRadius.circular(20),
-
             ),
             child: TextField(
               decoration: InputDecoration(
-                hint: Row(
-                  children: [
-                    Icon(Icons.search),
-                    Text("Pesquisar")
-                  ],
-                ),
+                hint: Row(children: [Icon(Icons.search), Text("Pesquisar")]),
                 contentPadding: EdgeInsets.only(left: 15),
                 border: InputBorder.none,
               ),
               controller: _searchController,
+
+              onEditingComplete: () {
+                homeCubit.getMovie(_searchController.text);
+                _searchController.clear();
+              },
             ),
           ),
           BlocBuilder(
@@ -58,9 +57,11 @@ class _HomePageState extends State<HomePage> {
               if (state is HomeSuccess) {
                 return Expanded(
                   child: RefreshIndicator(
-                    onRefresh: () => homeCubit.getMovies(),
+                    onRefresh: () => homeCubit.getMovie(_searchController.text),
                     child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
                       itemCount: state.movies?.length ?? 0,
                       itemBuilder: (context, index) {
                         final movie = state.movies![index];
@@ -97,7 +98,13 @@ class _HomePageState extends State<HomePage> {
               right: 10,
               top: 10,
             ),
-            decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.deepPurple, Colors.black], begin: AlignmentGeometry.topCenter, end: AlignmentGeometry.bottomCenter)),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.deepPurple, Colors.black],
+                begin: AlignmentGeometry.topCenter,
+                end: AlignmentGeometry.bottomCenter,
+              ),
+            ),
             child: Row(
               children: [
                 Text(

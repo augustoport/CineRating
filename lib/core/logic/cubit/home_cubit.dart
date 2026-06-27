@@ -19,4 +19,18 @@ class HomeCubit extends Cubit<HomeStates> {
       emit(HomeError('Não foi possível carregar os filmes'));
     }
   }
+
+  Future<void> getMovie(String? movie) async {
+    emit(HomeLoading());
+    try {
+      if (movie != null && movie != "") {
+        final movies = await _homeRepository.getMovieByName(movie: movie!);
+        emit(HomeSuccess(movies));
+      } else {
+        getMovies();
+      }
+    } catch (e) {
+      emit(HomeError("Não foi possivel buscar o filme"));
+    }
+  }
 }

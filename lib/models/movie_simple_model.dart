@@ -74,7 +74,7 @@ class MovieSimple {
 
   factory MovieSimple.fromMap(Map<String, dynamic> json) => MovieSimple(
     adult: json["adult"],
-    backdropPath: Environment.mediaUrl + json["backdrop_path"],
+    backdropPath: json["backdrop_path"] == null ? null : Environment.mediaUrl + json["backdrop_path"],
     genreIds: json["genre_ids"] == null
         ? []
         : List<int>.from(json["genre_ids"]!.map((x) => x)),
@@ -83,8 +83,8 @@ class MovieSimple {
     originalTitle: json["original_title"],
     overview: json["overview"],
     popularity: json["popularity"]?.toDouble(),
-    posterPath: Environment.mediaUrl + json["poster_path"],
-    releaseDate: json["release_date"] == null
+    posterPath: json["poster_path"] == null ? null :  Environment.mediaUrl + json["poster_path"],
+    releaseDate: json["release_date"] == null || json["release_date"] == ""
         ? null
         : DateTime.parse(json["release_date"]),
     title: json["title"],
