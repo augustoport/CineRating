@@ -27,48 +27,50 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: (Colors.black),
-      appBar: AppBar(title: const Text('Filmes'), centerTitle: true),
       body: Column(
         children: [
-          Container(
-            margin: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.white),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: TextField(
-              decoration: InputDecoration(
-                hint: Row(children: [Icon(Icons.search), Text("Pesquisar")]),
-                contentPadding: EdgeInsets.only(left: 15),
-                border: InputBorder.none,
+          SafeArea(
+            child: Container(
+              margin: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(20),
               ),
-              controller: _searchController,
-
-              onEditingComplete: () {
-                homeCubit.getMovie(_searchController.text);
-                _searchController.clear();
-              },
+              child: TextField(
+                decoration: InputDecoration(
+                  hint: Row(children: [Icon(Icons.search), Text("Pesquisar")]),
+                  contentPadding: EdgeInsets.only(left: 15),
+                  border: InputBorder.none,
+                ),
+                controller: _searchController,
+            
+                onEditingComplete: () {
+                  homeCubit.getMovie(_searchController.text);
+                  _searchController.clear();
+                },
+              ),
             ),
           ),
           BlocBuilder(
             bloc: homeCubit,
             builder: (context, state) {
               if (state is HomeSuccess) {
-                return Expanded(
+                return Flexible(
                   child: RefreshIndicator(
                     onRefresh: () => homeCubit.getMovie(_searchController.text),
                     child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: MediaQuery.of(context).size.width * .5,
+                        childAspectRatio: 1.5,
                       ),
                       itemCount: state.movies?.length ?? 0,
                       itemBuilder: (context, index) {
-                        final movie = state.movies![index];
+                        final movie = state.movies?[index];
                         return MovieCard(
-                          photo: movie.posterPath,
-                          title: movie.title,
-                          vote: movie.voteAverage.toString(),
+                          photo: movie?.posterPath,
+                          title: movie?.title,
+                          vote: (movie?.voteAverage ?? 0).toStringAsFixed(1),
                         );
                       },
                     ),
