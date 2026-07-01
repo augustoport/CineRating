@@ -13,29 +13,27 @@ class MovieCard extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
+        border: Border.all(color: Colors.white),
         gradient: LinearGradient(
           colors: [Colors.deepPurple, Colors.black],
           begin: AlignmentGeometry.topCenter,
           end: AlignmentGeometry.bottomCenter,
         ),
-        color: Colors.red
+        color: Colors.red,
       ),
       child: Row(
         children: [
-          if (photo != null)... [
-
-          Image.network(photo!, cacheHeight: (size.height * .2).ceil() , ),
-          ] else ... [
+          if (photo != null) ...[
+            Image.network(photo!, cacheHeight: (size.height * .2).ceil()),
+          ] else ...[
             Container(
               height: size.height * .2,
               width: size.width * .23,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade400
-              ),
-              child: Icon(Icons.camera_alt, color: Colors.white,),
+              decoration: BoxDecoration(color: Colors.grey.shade400),
+              child: Icon(Icons.camera_alt, color: Colors.white),
             ),
-          ] ,
-        
+          ],
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,19 +43,15 @@ class MovieCard extends StatelessWidget {
                   title ?? "N/A",
                   style: TextStyle(color: Colors.white, fontSize: 14),
                   textAlign: TextAlign.center,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.star, color: Colors.amber),
-                    Text(
-                      vote ?? "N/A",
-                     
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    Text(vote ?? "N/A", style: TextStyle(color: Colors.white)),
                   ],
                 ),
               ],

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../core/logic/cubit/home_cubit.dart';
+import '../core/logic/cubit/home/home_cubit.dart';
 import '../widgets/movie_card.dart';
+import 'movie_detail_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   HomeCubit homeCubit = HomeCubit();
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   initState() {
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
                   border: InputBorder.none,
                 ),
                 controller: _searchController,
-            
+
                 onEditingComplete: () {
                   homeCubit.getMovie(_searchController.text);
                   _searchController.clear();
@@ -61,16 +62,29 @@ class _HomePageState extends State<HomePage> {
                     onRefresh: () => homeCubit.getMovie(_searchController.text),
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: MediaQuery.of(context).size.width * .5,
+                        maxCrossAxisExtent:
+                            MediaQuery.of(context).size.width * .5,
                         childAspectRatio: 1.5,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 5,
                       ),
                       itemCount: state.movies?.length ?? 0,
                       itemBuilder: (context, index) {
                         final movie = state.movies?[index];
-                        return MovieCard(
-                          photo: movie?.posterPath,
-                          title: movie?.title,
-                          vote: (movie?.voteAverage ?? 0).toStringAsFixed(1),
+                        return InkWell(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MovieDetailPage(
+                                movieId: (movie?.id ?? 0).toString(),
+                              ),
+                            ),
+                          ),
+                          child: MovieCard(
+                            photo: movie?.posterPath,
+                            title: movie?.title,
+                            vote: (movie?.voteAverage ?? 0).toStringAsFixed(1),
+                          ),
                         );
                       },
                     ),
