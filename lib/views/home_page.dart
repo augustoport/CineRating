@@ -25,9 +25,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: (Colors.black),
+      backgroundColor: (Colors.grey.shade900),
       body: Column(
         children: [
           SafeArea(
@@ -65,8 +71,7 @@ class _HomePageState extends State<HomePage> {
                         maxCrossAxisExtent:
                             MediaQuery.of(context).size.width * .5,
                         childAspectRatio: 1.5,
-                        crossAxisSpacing: 5,
-                        mainAxisSpacing: 5,
+                        mainAxisSpacing: 15,
                       ),
                       itemCount: state.movies?.length ?? 0,
                       itemBuilder: (context, index) {

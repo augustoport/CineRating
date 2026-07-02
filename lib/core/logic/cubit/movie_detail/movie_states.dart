@@ -8,8 +8,10 @@ class MovieLoading extends MovieStates {}
 
 class MovieSuccess extends MovieStates {
   final MovieDetail movieDetail;
+  final List<CrewModel> cast;
+  final CrewModel director;
 
-  MovieSuccess(this.movieDetail);
+  MovieSuccess(this.movieDetail, this.cast, this.director);
 }
 
 class MovieError extends MovieStates {

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import '../../models/crew_model.dart';
 import '../../models/movie_detail_model.dart';
 import '../../shared/env.dart';
 import '../../models/movie_simple_model.dart';
@@ -67,6 +68,25 @@ class MovieService {
       return movieDetails;
     } on DioException {
       throw Exception("Não foi possível carregar os detalhes do filme");
+    }
+  }
+
+  Future<List<CrewModel>?> getMovieCrew({required String movieId}) async {
+    try {
+      final Dio dio = Dio();
+      dio.options.headers["Authorization"] = "Bearer $token";
+
+      final res = await dio.get('$url/movie/$movieId/credits');
+
+      List<CrewModel> crew = [];
+
+      res.data['cast'].forEach((c) {
+        final crewMember = CrewModel.fromMap(c);
+        crew.add(crewMember);
+      });
+      return crew;
+    } on DioException {
+      return null;
     }
   }
 }

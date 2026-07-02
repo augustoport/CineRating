@@ -12,24 +12,55 @@ class MovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade800,
+            spreadRadius: .1,
+            blurRadius: 2,
+            offset: Offset(0, 2),
+          ),
+        ],
+        borderRadius: BorderRadius.circular(6),
         gradient: LinearGradient(
-          colors: [Colors.deepPurple, Colors.black],
+          colors: [Colors.deepPurple.shade900, Colors.black],
           begin: AlignmentGeometry.topCenter,
           end: AlignmentGeometry.bottomCenter,
         ),
-        color: Colors.red,
       ),
       child: Row(
         children: [
           if (photo != null) ...[
-            Image.network(photo!, cacheHeight: (size.height * .2).ceil()),
+            ClipRRect(
+              borderRadius: BorderRadiusGeometry.only(
+                topLeft: Radius.circular(6),
+                bottomLeft: Radius.circular(6),
+              ),
+              child: Container(
+                height: size.height * .2,
+                width: size.width * .23,
+                decoration: BoxDecoration(color: Colors.grey.shade400),
+                child: Image.network(
+                  photo!,
+                  cacheHeight: (size.height * .2).ceil(),
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loading) {
+                    return loading == null
+                        ? child
+                        : Center(child: CircularProgressIndicator());
+                  },
+                ),
+              ),
+            ),
           ] else ...[
             Container(
               height: size.height * .2,
-              width: size.width * .23,
-              decoration: BoxDecoration(color: Colors.grey.shade400),
+              width: size.width * .22,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade400,
+                borderRadius: BorderRadius.horizontal(left: Radius.circular(6)),
+              ),
               child: Icon(Icons.camera_alt, color: Colors.white),
             ),
           ],
@@ -39,19 +70,33 @@ class MovieCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  title ?? "N/A",
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                  textAlign: TextAlign.center,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    title ?? "N/A",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.star, color: Colors.amber),
-                    Text(vote ?? "N/A", style: TextStyle(color: Colors.white)),
+                    SizedBox(width: 5),
+                    Text(
+                      vote ?? "N/A",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
               ],
