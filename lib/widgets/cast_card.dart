@@ -52,6 +52,7 @@ class CastCard extends StatelessWidget {
           "as ${actor?.character}",
           style: TextStyle(color: Colors.white, fontSize: 10),
           textAlign: TextAlign.center,
+          maxLines: 2,
         ),
       ],
     );

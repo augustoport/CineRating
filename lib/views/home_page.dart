@@ -1,8 +1,14 @@
+import 'dart:ui';
+
+import 'package:cinerating/widgets/content_list.dart';
+import 'package:cinerating/widgets/navigation_blur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../core/logic/cubit/home/home_cubit.dart';
+import '../shared/themes/app_colors.dart';
 import '../widgets/movie_card.dart';
+import '../widgets/session_card.dart';
 import 'movie_detail_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  AppColors appColors = AppColors();
   HomeCubit homeCubit = HomeCubit();
   final TextEditingController _searchController = TextEditingController();
 
@@ -30,74 +37,194 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  void setList(String? search) async {
+    BlocListener(
+      listener: (context, state) {
+        if (state is HomeMovie) {
+          if (search != null && search != "") {
+            homeCubit.getMovie(search);
+          } else {
+            homeCubit.getMovies();
+          }
+        } else if (state is HomeTv) {
+          if (search != null && search != "") {
+            homeCubit.getTvShow(search);
+          } else {
+            homeCubit.getTvShows();
+          }
+        } else if (state is HomePeople) {
+          if (search != null && search != "") {
+            homeCubit.getPersonByName(search);
+          } else {
+            homeCubit.getPeople();
+          }
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: (Colors.grey.shade900),
+      backgroundColor: appColors.backgroundColor,
       body: Column(
         children: [
-          SafeArea(
-            child: Container(
-              margin: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(20),
+          Container(
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top + 30,
+              bottom: 10,
+            ),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [appColors.primaryColor, appColors.backgroundColor],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
-              child: TextField(
-                decoration: InputDecoration(
-                  hint: Row(children: [Icon(Icons.search), Text("Pesquisar")]),
-                  contentPadding: EdgeInsets.only(left: 15),
-                  border: InputBorder.none,
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+            ),
+            child: Row(
+              children: [
+                InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Icon(Icons.menu, color: Colors.white),
+                  ),
                 ),
-                controller: _searchController,
-
-                onEditingComplete: () {
-                  homeCubit.getMovie(_searchController.text);
-                  _searchController.clear();
-                },
+                Expanded(
+                  child: Text(
+                    "CineRating",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: Icon(Icons.menu, color: Colors.transparent),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Container(
+            margin: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.white),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: TextField(
+              decoration: InputDecoration(
+                hint: Row(children: [Icon(Icons.search), Text("Pesquisar")]),
+                contentPadding: EdgeInsets.only(left: 15),
+                border: InputBorder.none,
               ),
+              controller: _searchController,
+
+              onEditingComplete: () {
+                setList(_searchController.text);
+                _searchController.clear();
+              },
             ),
           ),
           BlocBuilder(
             bloc: homeCubit,
             builder: (context, state) {
-              if (state is HomeSuccess) {
-                return Flexible(
-                  child: RefreshIndicator(
-                    onRefresh: () => homeCubit.getMovie(_searchController.text),
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent:
-                            MediaQuery.of(context).size.width * .5,
-                        childAspectRatio: 1.5,
-                        mainAxisSpacing: 15,
-                      ),
-                      itemCount: state.movies?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        final movie = state.movies?[index];
-                        return InkWell(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MovieDetailPage(
-                                movieId: (movie?.id ?? 0).toString(),
-                              ),
-                            ),
-                          ),
-                          child: MovieCard(
-                            photo: movie?.posterPath,
-                            title: movie?.title,
-                            vote: (movie?.voteAverage ?? 0).toStringAsFixed(1),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                );
-              } else if (state is HomeLoading) {
+              if (state is HomeLoading) {
                 return Expanded(
                   child: const Center(child: CircularProgressIndicator()),
+                );
+              } else if (state is HomeMovie) {
+                return Expanded(
+                  child: Stack(
+                    children: [
+                      ContentList(
+                        onRefresh: () => homeCubit.getMovies(),
+                        content: state.movies ?? [],
+                        type: 'movie',
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: MediaQuery.of(context).padding.bottom,
+                          horizontal: 12,
+                        ),
+                        child: Align(
+                          alignment: .bottomCenter,
+                          child: NavigationBlur(
+                            options: Row(
+                              mainAxisAlignment: .spaceAround,
+                              children: [
+                                SessionCard(
+                                  icon: Icons.movie,
+                                  session: "Movie",
+                                  onTap: homeCubit.getMovies,
+                                  active: true,
+                                ),
+                                SessionCard(
+                                  icon: Icons.tv,
+                                  session: "TV",
+                                  onTap: homeCubit.getTvShows,
+                                  active: false,
+                                ),
+                                SessionCard(
+                                  icon: Icons.person,
+                                  session: "People",
+                                  onTap: () {},
+                                  active: false,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              } else if (state is HomeTv) {
+                return Expanded(
+                  child: Stack(
+                    children: [
+                      ContentList(
+                        onRefresh: () => homeCubit.getTvShows(),
+                        content: state.tvShows ?? [],
+                        type: 'tv',
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: MediaQuery.of(context).padding.bottom,
+                          horizontal: 12,
+                        ),
+                        child: Align(
+                          alignment: .bottomCenter,
+                          child: NavigationBlur(
+                            options: Row(
+                              mainAxisAlignment: .spaceAround,
+                              children: [
+                                SessionCard(
+                                  icon: Icons.movie,
+                                  session: "Movie",
+                                  onTap: homeCubit.getMovies,
+                                  active: false,
+                                ),
+                                SessionCard(
+                                  icon: Icons.tv,
+                                  session: "TV",
+                                  onTap: homeCubit.getTvShows,
+                                  active: true,
+                                ),
+                                SessionCard(
+                                  icon: Icons.person,
+                                  session: "People",
+                                  onTap: () {},
+                                  active: false,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               } else if (state is HomeError) {
                 return Center(
@@ -110,30 +237,6 @@ class _HomePageState extends State<HomePage> {
                 return Spacer();
               }
             },
-          ),
-
-          Container(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).padding.bottom + 10,
-              left: 10,
-              right: 10,
-              top: 10,
-            ),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.deepPurple, Colors.black],
-                begin: AlignmentGeometry.topCenter,
-                end: AlignmentGeometry.bottomCenter,
-              ),
-            ),
-            child: Row(
-              children: [
-                Text(
-                  "Powered by: The Movie Database | Augusto Portella",
-                  style: TextStyle(color: Colors.white, fontSize: 12),
-                ),
-              ],
-            ),
           ),
         ],
       ),

@@ -1,0 +1,52 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cinerating/core/logic/cubit/serie_detail/serie_cubit.dart';
+import 'package:cinerating/shared/themes/app_colors.dart';
+import 'package:cinerating/widgets/content_detail.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+
+class TvShowDetailPage extends StatefulWidget {
+  final String id;
+  const TvShowDetailPage({super.key, required this.id});
+
+  @override
+  State<TvShowDetailPage> createState() => _TvShowDetailPageState();
+}
+
+class _TvShowDetailPageState extends State<TvShowDetailPage> {
+  final SerieCubit _tvCubit = SerieCubit();
+  AppColors appColors = AppColors();
+
+  @override
+  void initState() {
+    Future.microtask(() => _tvCubit.getSerieDetail(widget.id));
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
+      backgroundColor: Colors.grey.shade900,
+      appBar: AppBar(
+        backgroundColor: Colors.grey.shade900,
+        foregroundColor: Colors.white,
+      ),
+      body: BlocBuilder(
+        bloc: _tvCubit,
+        builder: (context, state) {
+          if (state is SerieLoading) {
+            return Expanded(child: Center(child: CircularProgressIndicator()));
+          } else if (state is SerieSuccess) {
+            return ContentDetail(content: state.tvShow, type: 'tv');
+          } else if (state is SerieError) {
+            return Text("Erro");
+          } else {
+            return Text("Erro");
+          }
+        },
+      ),
+    );
+  }
+}

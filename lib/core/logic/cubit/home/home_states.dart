@@ -6,11 +6,19 @@ class HomeInitial extends HomeStates {}
 
 class HomeLoading extends HomeStates {}
 
-class HomeSuccess extends HomeStates {
-  HomeSuccess(this.movies);
+class HomeMovie extends HomeStates {
+  HomeMovie(this.movies);
 
   final List<MovieSimple>? movies;
 }
+
+class HomeTv extends HomeStates {
+  HomeTv(this.tvShows);
+
+  final List<MovieSimple>? tvShows;
+}
+
+class HomePeople extends HomeStates {}
 
 class HomeError extends HomeStates {
   HomeError(this.message);

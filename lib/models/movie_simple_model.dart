@@ -14,6 +14,7 @@ class MovieSimple {
   String? posterPath;
   DateTime? releaseDate;
   String? title;
+  String? name;
   bool? video;
   double? voteAverage;
   int? voteCount;
@@ -30,6 +31,7 @@ class MovieSimple {
     this.posterPath,
     this.releaseDate,
     this.title,
+    this.name,
     this.video,
     this.voteAverage,
     this.voteCount,
@@ -47,6 +49,7 @@ class MovieSimple {
     String? posterPath,
     DateTime? releaseDate,
     String? title,
+    String? name,
     bool? video,
     double? voteAverage,
     int? voteCount,
@@ -62,6 +65,7 @@ class MovieSimple {
     posterPath: posterPath ?? this.posterPath,
     releaseDate: releaseDate ?? this.releaseDate,
     title: title ?? this.title,
+    name: name ?? this.name,
     video: video ?? this.video,
     voteAverage: voteAverage ?? this.voteAverage,
     voteCount: voteCount ?? this.voteCount,
@@ -74,7 +78,9 @@ class MovieSimple {
 
   factory MovieSimple.fromMap(Map<String, dynamic> json) => MovieSimple(
     adult: json["adult"],
-    backdropPath: json["backdrop_path"] == null ? null : Environment.mediaUrl + json["backdrop_path"],
+    backdropPath: json["backdrop_path"] == null
+        ? null
+        : Environment.mediaUrl + json["backdrop_path"],
     genreIds: json["genre_ids"] == null
         ? []
         : List<int>.from(json["genre_ids"]!.map((x) => x)),
@@ -83,11 +89,14 @@ class MovieSimple {
     originalTitle: json["original_title"],
     overview: json["overview"],
     popularity: json["popularity"]?.toDouble(),
-    posterPath: json["poster_path"] == null ? null :  Environment.mediaUrl + json["poster_path"],
+    posterPath: json["poster_path"] == null
+        ? null
+        : Environment.mediaUrl + json["poster_path"],
     releaseDate: json["release_date"] == null || json["release_date"] == ""
         ? null
         : DateTime.parse(json["release_date"]),
     title: json["title"],
+    name: json["name"],
     video: json["video"],
     voteAverage: json["vote_average"]?.toDouble(),
     voteCount: json["vote_count"],
@@ -108,6 +117,7 @@ class MovieSimple {
     "release_date":
         "${releaseDate!.year.toString().padLeft(4, '0')}-${releaseDate!.month.toString().padLeft(2, '0')}-${releaseDate!.day.toString().padLeft(2, '0')}",
     "title": title,
+    "name": name,
     "video": video,
     "vote_average": voteAverage,
     "vote_count": voteCount,
