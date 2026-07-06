@@ -7,9 +7,10 @@ class SerieInitial extends SerieState {}
 class SerieLoading extends SerieState {}
 
 class SerieSuccess extends SerieState {
-  SerieSuccess(this.tvShow);
+  SerieSuccess(this.tvShow, this.cast);
 
   TvShowModel tvShow;
+  List<Cast>? cast;
 }
 
 class SerieError extends SerieState {}

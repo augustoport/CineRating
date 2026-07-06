@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import '../shared/themes/app_colors.dart';
+
 class NavigationBlur extends StatelessWidget {
   final Widget options;
   const NavigationBlur({super.key, required this.options});
@@ -11,10 +13,12 @@ class NavigationBlur extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadiusGeometry.circular(8),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
         child: Container(
           padding: EdgeInsets.all(4),
-          decoration: BoxDecoration(color: Colors.grey.withAlpha(60)),
+          decoration: BoxDecoration(
+            color: AppColors().primaryColor.withAlpha(100),
+          ),
           child: options,
         ),
       ),

@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:cinerating/core/services/tv_service.dart';
 import 'package:cinerating/models/tv_show_model.dart';
 
+import '../../../../models/tv_crew_model.dart';
+
 part 'serie_state.dart';
 
 class SerieCubit extends Cubit<SerieState> {
@@ -12,9 +14,11 @@ class SerieCubit extends Cubit<SerieState> {
     emit(SerieLoading());
     try {
       final serie = await _repo.getShowId(serieId: serieId);
-      emit(SerieSuccess(serie));
+      final cast = await _repo.getShowCrew(id: serieId);
+      emit(SerieSuccess(serie, cast?.cast ?? []));
     } catch (e) {
       emit(SerieError());
     }
+    return;
   }
 }

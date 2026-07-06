@@ -39,6 +39,7 @@ class _HomePageState extends State<HomePage> {
 
   void setList(String? search) async {
     BlocListener(
+      bloc: homeCubit,
       listener: (context, state) {
         if (state is HomeMovie) {
           if (search != null && search != "") {
@@ -65,7 +66,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: appColors.backgroundColor,
       body: Column(
@@ -136,94 +136,18 @@ class _HomePageState extends State<HomePage> {
                 );
               } else if (state is HomeMovie) {
                 return Expanded(
-                  child: Stack(
-                    children: [
-                      ContentList(
-                        onRefresh: () => homeCubit.getMovies(),
-                        content: state.movies ?? [],
-                        type: 'movie',
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).padding.bottom,
-                          horizontal: 12,
-                        ),
-                        child: Align(
-                          alignment: .bottomCenter,
-                          child: NavigationBlur(
-                            options: Row(
-                              mainAxisAlignment: .spaceAround,
-                              children: [
-                                SessionCard(
-                                  icon: Icons.movie,
-                                  session: "Movie",
-                                  onTap: homeCubit.getMovies,
-                                  active: true,
-                                ),
-                                SessionCard(
-                                  icon: Icons.tv,
-                                  session: "TV",
-                                  onTap: homeCubit.getTvShows,
-                                  active: false,
-                                ),
-                                SessionCard(
-                                  icon: Icons.person,
-                                  session: "People",
-                                  onTap: () {},
-                                  active: false,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: ContentList(
+                    onRefresh: () => homeCubit.getMovies(),
+                    content: state.movies ?? [],
+                    type: 'movie',
                   ),
                 );
               } else if (state is HomeTv) {
                 return Expanded(
-                  child: Stack(
-                    children: [
-                      ContentList(
-                        onRefresh: () => homeCubit.getTvShows(),
-                        content: state.tvShows ?? [],
-                        type: 'tv',
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).padding.bottom,
-                          horizontal: 12,
-                        ),
-                        child: Align(
-                          alignment: .bottomCenter,
-                          child: NavigationBlur(
-                            options: Row(
-                              mainAxisAlignment: .spaceAround,
-                              children: [
-                                SessionCard(
-                                  icon: Icons.movie,
-                                  session: "Movie",
-                                  onTap: homeCubit.getMovies,
-                                  active: false,
-                                ),
-                                SessionCard(
-                                  icon: Icons.tv,
-                                  session: "TV",
-                                  onTap: homeCubit.getTvShows,
-                                  active: true,
-                                ),
-                                SessionCard(
-                                  icon: Icons.person,
-                                  session: "People",
-                                  onTap: () {},
-                                  active: false,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: ContentList(
+                    onRefresh: () => homeCubit.getTvShows(),
+                    content: state.tvShows ?? [],
+                    type: 'tv',
                   ),
                 );
               } else if (state is HomeError) {
@@ -239,6 +163,36 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ],
+      ),
+      bottomNavigationBar: BlocBuilder(
+        bloc: homeCubit,
+        builder: (context, state) {
+          return NavigationBlur(
+            options: Row(
+              mainAxisAlignment: .spaceAround,
+              children: [
+                SessionCard(
+                  icon: Icons.movie,
+                  session: "Movie",
+                  onTap: homeCubit.getMovies,
+                  active: state is HomeMovie,
+                ),
+                SessionCard(
+                  icon: Icons.tv,
+                  session: "TV",
+                  onTap: homeCubit.getTvShows,
+                  active: state is HomeTv,
+                ),
+                SessionCard(
+                  icon: Icons.person,
+                  session: "People",
+                  onTap: () {},
+                  active: false,
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

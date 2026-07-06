@@ -1,3 +1,4 @@
+import 'package:cinerating/models/crew_model.dart';
 import 'package:cinerating/shared/themes/app_colors.dart';
 import 'package:cinerating/widgets/cast_card.dart';
 import 'package:flutter/material.dart';
@@ -212,82 +213,99 @@ class ContentDetail extends StatelessWidget {
                   textAlign: TextAlign.justify,
                 ),
                 SizedBox(height: 10),
-                if (type == "movie") ...[
-                  Text(
-                    "Cast:",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: List.generate(cast.length, (i) {
-                        final actor = cast[i];
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CastCard(actor),
-                        );
-                      }),
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  if (director.name != "N/A")
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: .end,
-                      children: [
-                        Text(
-                          "Directed by:",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Column(
-                          children: [
-                            if (director.profilePath != null) ...[
-                              Image.network(
-                                director.profilePath ?? "",
-                                height: 80,
-                                width: 50,
-                                fit: BoxFit.cover,
-                              ),
-                            ] else ...[
-                              Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade400,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Icon(Icons.person, size: 50),
-                              ),
-                            ],
-                            SizedBox(height: 5),
-                            Text(
-                              director.name ?? "N/A",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                ],
+                if (type == "movie") ContentCreditWidget(cast, director),
+                if (type == "tv") ContentCreditWidget(cast, director),
               ],
             ),
           ),
           SizedBox(height: MediaQuery.of(context).padding.bottom + 20),
         ],
       ),
+    );
+  }
+}
+
+class ContentCreditWidget extends StatelessWidget {
+  final cast;
+  final director;
+  const ContentCreditWidget(this.cast, this.director, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          "Cast:",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 5),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: List.generate(cast.length, (i) {
+              final actor = cast[i];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CastCard(
+                  actor,
+                  roles: actor is CrewModel ? [] : actor.roles,
+                ),
+              );
+            }),
+          ),
+        ),
+        SizedBox(height: 15),
+        if (director != null && director.name != "N/A")
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: .end,
+            children: [
+              Text(
+                "Directed by:",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Column(
+                children: [
+                  if (director.profilePath != null) ...[
+                    Image.network(
+                      director.profilePath ?? "",
+                      height: 80,
+                      width: 50,
+                      fit: BoxFit.cover,
+                    ),
+                  ] else ...[
+                    Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade400,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Icon(Icons.person, size: 50),
+                    ),
+                  ],
+                  SizedBox(height: 5),
+                  Text(
+                    director.name ?? "N/A",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+      ],
     );
   }
 }

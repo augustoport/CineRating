@@ -1,3 +1,4 @@
+import 'package:cinerating/models/tv_crew_model.dart';
 import 'package:cinerating/models/tv_show_model.dart';
 import 'package:dio/dio.dart';
 
@@ -43,6 +44,22 @@ class TvService {
       return tvshow;
     } on DioException {
       throw Exception("Não foi possível carregar os detalhes do filme");
+    }
+  }
+
+  Future<TvShowCrew?> getShowCrew({required String id}) async {
+    try {
+      final Dio dio = Dio();
+      dio.options.headers["Authorization"] = "Bearer $token";
+
+      final res = await dio.get('$url/tv/$id/aggregate_credits');
+
+      TvShowCrew crew = TvShowCrew();
+      crew = TvShowCrew.fromMap(res.data);
+
+      return crew;
+    } on DioException {
+      return null;
     }
   }
 }

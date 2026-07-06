@@ -2,8 +2,9 @@ import 'package:cinerating/models/crew_model.dart';
 import 'package:flutter/material.dart';
 
 class CastCard extends StatelessWidget {
-  final CrewModel? actor;
-  const CastCard(this.actor, {super.key});
+  final dynamic actor;
+  final List<dynamic> roles;
+  const CastCard(this.actor, {super.key, required this.roles});
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +51,20 @@ class CastCard extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            Text(
-              "as ${actor?.character}",
-              style: TextStyle(color: Colors.white, fontSize: 10),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-            ),
+            if (roles.isNotEmpty)
+              Text(
+                "as ${roles[0].character}",
+                style: TextStyle(color: Colors.white, fontSize: 10),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+              ),
+            if (roles.isEmpty)
+              Text(
+                "as ${actor?.character}",
+                style: TextStyle(color: Colors.white, fontSize: 10),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+              ),
           ],
         ),
       ],

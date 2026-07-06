@@ -39,9 +39,13 @@ class _TvShowDetailPageState extends State<TvShowDetailPage> {
           if (state is SerieLoading) {
             return Expanded(child: Center(child: CircularProgressIndicator()));
           } else if (state is SerieSuccess) {
-            return ContentDetail(content: state.tvShow, type: 'tv');
+            return ContentDetail(
+              content: state.tvShow,
+              type: 'tv',
+              cast: state.cast,
+            );
           } else if (state is SerieError) {
-            return Text("Erro");
+            return Text("Erro", style: TextStyle(color: Colors.white));
           } else {
             return Text("Erro");
           }
