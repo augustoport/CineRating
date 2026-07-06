@@ -39,20 +39,24 @@ class CastCard extends StatelessWidget {
           ),
         ],
         SizedBox(height: 10),
-        Text(
-          actor?.name ?? "N/A",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        Text(
-          "as ${actor?.character}",
-          style: TextStyle(color: Colors.white, fontSize: 10),
-          textAlign: TextAlign.center,
-          maxLines: 2,
+        Column(
+          children: [
+            Text(
+              actor?.name ?? "N/A",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              "as ${actor?.character}",
+              style: TextStyle(color: Colors.white, fontSize: 10),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+            ),
+          ],
         ),
       ],
     );

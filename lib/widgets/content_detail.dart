@@ -1,11 +1,20 @@
 import 'package:cinerating/shared/themes/app_colors.dart';
+import 'package:cinerating/widgets/cast_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ContentDetail extends StatelessWidget {
   final dynamic content;
+  final dynamic cast;
+  final dynamic director;
   final String type;
-  const ContentDetail({super.key, required this.content, required this.type});
+  const ContentDetail({
+    super.key,
+    required this.content,
+    required this.type,
+    this.cast,
+    this.director,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -203,74 +212,76 @@ class ContentDetail extends StatelessWidget {
                   textAlign: TextAlign.justify,
                 ),
                 SizedBox(height: 10),
-                // Text(
-                //   "Cast:",
-                //   style: TextStyle(
-                //     color: Colors.white,
-                //     fontSize: 18,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                // ),
-                // SizedBox(height: 5),
-                // SingleChildScrollView(
-                //   scrollDirection: Axis.horizontal,
-                //   child: Row(
-                //     children: List.generate(state.cast.length, (i) {
-                //       final actor = state.cast[i];
-                //       return Padding(
-                //         padding: const EdgeInsets.all(8.0),
-                //         child: CastCard(actor),
-                //       );
-                //     }),
-                //   ),
-                // ),
-                // SizedBox(height: 15),
-                // if (state.director.name != "N/A")
-                //   Row(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     mainAxisAlignment: .end,
-                //     children: [
-                //       Text(
-                //         "Directed by:",
-                //         style: TextStyle(
-                //           color: Colors.white,
-                //           fontSize: 14,
-                //           fontWeight: FontWeight.bold,
-                //         ),
-                //       ),
-                //       Column(
-                //         children: [
-                //           if (state.director.profilePath != null) ...[
-                //             Image.network(
-                //               state.director.profilePath ?? "",
-                //               height: 80,
-                //               width: 50,
-                //               fit: BoxFit.cover,
-                //             ),
-                //           ] else ...[
-                //             Container(
-                //               height: 50,
-                //               width: 50,
-                //               decoration: BoxDecoration(
-                //                 color: Colors.grey.shade400,
-                //                 borderRadius: BorderRadius.circular(6),
-                //               ),
-                //               child: Icon(Icons.person, size: 50),
-                //             ),
-                //           ],
-                //           SizedBox(height: 5),
-                //           Text(
-                //             state.director.name ?? "N/A",
-                //             style: TextStyle(
-                //               color: Colors.white,
-                //               fontSize: 12,
-                //               fontWeight: FontWeight.bold,
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
+                if (type == "movie") ...[
+                  Text(
+                    "Cast:",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(cast.length, (i) {
+                        final actor = cast[i];
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CastCard(actor),
+                        );
+                      }),
+                    ),
+                  ),
+                  SizedBox(height: 15),
+                  if (director.name != "N/A")
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: .end,
+                      children: [
+                        Text(
+                          "Directed by:",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            if (director.profilePath != null) ...[
+                              Image.network(
+                                director.profilePath ?? "",
+                                height: 80,
+                                width: 50,
+                                fit: BoxFit.cover,
+                              ),
+                            ] else ...[
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade400,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Icon(Icons.person, size: 50),
+                              ),
+                            ],
+                            SizedBox(height: 5),
+                            Text(
+                              director.name ?? "N/A",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                ],
               ],
             ),
           ),

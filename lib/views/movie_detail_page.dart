@@ -42,7 +42,12 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           if (state is MovieLoading) {
             return Expanded(child: Center(child: CircularProgressIndicator()));
           } else if (state is MovieSuccess) {
-            return ContentDetail(content: state.movieDetail, type: "movie");
+            return ContentDetail(
+              content: state.movieDetail,
+              type: "movie",
+              cast: state.cast,
+              director: state.director,
+            );
           } else {
             return Center(
               child: Text(
