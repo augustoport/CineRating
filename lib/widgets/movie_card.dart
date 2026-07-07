@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class MovieCard extends StatelessWidget {
@@ -40,15 +41,13 @@ class MovieCard extends StatelessWidget {
                 height: size.height * .2,
                 width: size.width * .23,
                 decoration: BoxDecoration(color: Colors.grey.shade400),
-                child: Image.network(
-                  photo!,
-                  cacheHeight: (size.height * .2).ceil(),
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loading) {
-                    return loading == null
-                        ? child
-                        : Center(child: CircularProgressIndicator());
+                child: CachedNetworkImage(
+                  imageUrl: photo!,
+                  placeholder: (context, url) {
+                    return Center(child: CircularProgressIndicator());
                   },
+                  height: size.height * .2,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
