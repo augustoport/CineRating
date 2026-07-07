@@ -1,17 +1,13 @@
-# cinerating
+# 🎬 Movie & TV Explorer
 
-A new Flutter project.
+Projeto desenvolvido em **Flutter** utilizando a **API do TMDB**, com o objetivo de servir como uma enciclopédia de filmes e séries. A aplicação reúne informações detalhadas sobre cada título, como:
 
-## Getting Started
+* ⭐ Avaliação dos usuários
+* ⏱️ Duração
+* 🎭 Elenco
+* 🎬 Direção
+* 📝 Sinopse
 
-This project is a starting point for a Flutter application.
+Além de oferecer uma interface para consulta de informações, o principal objetivo deste projeto é o **aprimoramento de conhecimentos em Flutter**, com foco na arquitetura **BLoC/Cubit**, boas práticas de organização de código, gerenciamento de estado e consumo de APIs REST.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+O desenvolvimento acontece de forma contínua, sendo implementado durante o tempo livre, à medida que novas funcionalidades são planejadas e estudadas. Dessa forma, o projeto também funciona como um ambiente para experimentação de novas técnicas, padrões e recursos do ecossistema Flutter.
