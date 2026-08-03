@@ -37,7 +37,7 @@ class _TvShowDetailPageState extends State<TvShowDetailPage> {
         bloc: _tvCubit,
         builder: (context, state) {
           if (state is SerieLoading) {
-            return Expanded(child: Center(child: CircularProgressIndicator()));
+            return Center(child: CircularProgressIndicator());
           } else if (state is SerieSuccess) {
             return ContentDetail(
               content: state.tvShow,

@@ -32,23 +32,37 @@ class MovieCard extends StatelessWidget {
       child: Row(
         children: [
           if (photo != null) ...[
-            ClipRRect(
-              borderRadius: BorderRadiusGeometry.only(
-                topLeft: Radius.circular(6),
-                bottomLeft: Radius.circular(6),
-              ),
-              child: Container(
-                height: size.height * .2,
-                width: size.width * .23,
-                decoration: BoxDecoration(color: Colors.grey.shade400),
-                child: CachedNetworkImage(
-                  imageUrl: photo!,
-                  placeholder: (context, url) {
-                    return Center(child: CircularProgressIndicator());
-                  },
-                  height: size.height * .2,
-                  fit: BoxFit.cover,
+            Container(
+              height: size.height * .2,
+              width: size.width * .23,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade400,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(6),
+                  bottomLeft: Radius.circular(6),
                 ),
+              ),
+              child: CachedNetworkImage(
+                imageUrl: photo!,
+                imageBuilder: (context, provider) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(6),
+                        bottomLeft: Radius.circular(6),
+                      ),
+                      image: DecorationImage(
+                        image: provider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                },
+                placeholder: (context, url) {
+                  return Center(child: ColoredBox(color: Colors.grey));
+                },
+                height: size.height * .2,
+                fit: BoxFit.cover,
               ),
             ),
           ] else ...[

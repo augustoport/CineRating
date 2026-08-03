@@ -20,11 +20,36 @@ class TvService {
       List<MovieSimple> tvShows = [];
 
       res.data['results'].forEach((m) {
-        final movie = MovieSimple.fromMap(m);
-        tvShows.add(movie);
+        final tvShow = MovieSimple.fromMap(m);
+        tvShows.add(tvShow);
       });
 
       return tvShows;
+    } on DioException {
+      return null;
+    }
+  }
+
+  Future<List<MovieSimple>?> getTvShowByName({required String show}) async {
+    try {
+      final Dio dio = Dio();
+      dio.options.headers["Authorization"] = "Bearer $token";
+
+      final res = await dio.get(
+        "$url/search/tv",
+        queryParameters: {"query": show, "language": "en-US;pt-BR"},
+      );
+
+      List<MovieSimple> tvShows = [];
+
+      res.data['results'].forEach((m) {
+        final tvShow = MovieSimple.fromMap(m);
+        tvShows.add(tvShow);
+      });
+
+      return tvShows;
+
+      // ignore: empty_catches
     } on DioException {
       return null;
     }
@@ -43,7 +68,9 @@ class TvService {
 
       return tvshow;
     } on DioException {
-      throw Exception("Não foi possível carregar os detalhes do filme");
+      throw Exception(
+        "Não foi possível carregar os detalhes do programa de TV",
+      );
     }
   }
 

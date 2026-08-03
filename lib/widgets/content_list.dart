@@ -25,8 +25,8 @@ class ContentList extends StatelessWidget {
         children: [
           Expanded(
             child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: size.size.width * .5,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
                 childAspectRatio: 1.5,
                 mainAxisSpacing: 15,
               ),

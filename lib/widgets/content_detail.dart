@@ -20,7 +20,6 @@ class ContentDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    AppColors appColors = AppColors();
 
     return ListView.builder(
       itemCount: 1,
@@ -28,10 +27,10 @@ class ContentDetail extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: appColors.backgroundColor,
+              color: AppColors.backgroundColor,
               boxShadow: [
                 BoxShadow(
-                  color: appColors.primaryColor,
+                  color: AppColors.primaryColor,
                   spreadRadius: .15,
                   blurRadius: .8,
                   offset: Offset(0, 3),
@@ -43,22 +42,20 @@ class ContentDetail extends StatelessWidget {
               children: [
                 SizedBox(
                   width: size.width,
-                  child: Expanded(
-                    child: Container(
-                      height: size.height * .27,
-                      width: size.width,
-                      decoration: BoxDecoration(
-                        color: appColors.backgroundColor,
-                        borderRadius: BorderRadius.vertical(
-                          bottom: Radius.circular(4),
-                        ),
+                  child: Container(
+                    height: size.height * .27,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundColor,
+                      borderRadius: BorderRadius.vertical(
+                        bottom: Radius.circular(4),
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
-                        child: Image.network(
-                          content.backdropPath ?? "",
-                          fit: BoxFit.cover,
-                        ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                      child: Image.network(
+                        content.backdropPath ?? "",
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -109,14 +106,12 @@ class ContentDetail extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Expanded(
-                      child: Text(
-                        type == 'movie' ? content.title : content.name,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    Text(
+                      type == 'movie' ? content.title : content.name,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -194,7 +189,7 @@ class ContentDetail extends StatelessWidget {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: appColors.primaryColor,
+                            color: AppColors.primaryColor,
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(

@@ -16,9 +16,7 @@ class NavigationBlur extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
         child: Container(
           padding: EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: AppColors().primaryColor.withAlpha(100),
-          ),
+          decoration: BoxDecoration(color: Colors.grey.withAlpha(35)),
           child: options,
         ),
       ),

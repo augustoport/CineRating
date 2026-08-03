@@ -29,7 +29,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final media = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
       appBar: AppBar(
@@ -40,7 +40,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         bloc: movieCubit,
         builder: (context, state) {
           if (state is MovieLoading) {
-            return Expanded(child: Center(child: CircularProgressIndicator()));
+            return Center(child: CircularProgressIndicator());
           } else if (state is MovieSuccess) {
             return ContentDetail(
               content: state.movieDetail,

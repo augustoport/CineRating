@@ -42,13 +42,21 @@ class HomeCubit extends Cubit<HomeStates> {
       final tvShows = await _tvRepo.getTvShows();
       emit(HomeTv(tvShows));
     } catch (e) {
-      emit(HomeError('Não foi possível carregar os filmes'));
+      emit(HomeError('Não foi possível carregar os programas de TV'));
     }
   }
 
-  Future<void> getTvShow(String? show) async {}
-
-  Future<void> getPeople() async {}
-
-  Future<void> getPersonByName(String? name) async {}
+  Future<void> getTvShow(String? show) async {
+    emit(HomeLoading());
+    try {
+      if (show != null && show != "") {
+        final tvShows = await _tvRepo.getTvShowByName(show: show);
+        emit(HomeTv(tvShows));
+      } else {
+        getTvShows();
+      }
+    } catch (e) {
+      emit(HomeError("Não foi possivel buscar o programa de TV"));
+    }
+  }
 }
