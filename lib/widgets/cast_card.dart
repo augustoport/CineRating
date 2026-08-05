@@ -23,7 +23,12 @@ class CastCard extends StatelessWidget {
                 loadingBuilder: (context, child, loading) {
                   return loading == null
                       ? child
-                      : Center(child: CircularProgressIndicator());
+                      : Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade400,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        );
                 },
               ),
             ),
