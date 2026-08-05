@@ -53,17 +53,20 @@ class CastCard extends StatelessWidget {
             ),
             if (roles.isNotEmpty)
               Text(
-                "as ${roles[0].character}",
+                "as ${roles.first.character}",
                 style: TextStyle(color: Colors.white, fontSize: 10),
                 textAlign: TextAlign.center,
                 maxLines: 2,
               ),
             if (roles.isEmpty)
-              Text(
-                "as ${actor?.character}",
-                style: TextStyle(color: Colors.white, fontSize: 10),
-                textAlign: TextAlign.center,
-                maxLines: 2,
+              SizedBox(
+                width: 70,
+                child: Text(
+                  "as ${actor?.character}",
+                  style: TextStyle(color: Colors.white, fontSize: 10),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                ),
               ),
           ],
         ),
