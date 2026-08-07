@@ -241,6 +241,7 @@ class ContentCreditWidget extends StatelessWidget {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
+            crossAxisAlignment: .start,
             children: List.generate(cast.length, (i) {
               final actor = cast[i];
               return Padding(
@@ -267,36 +268,41 @@ class ContentCreditWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Column(
-                children: [
-                  if (director.profilePath != null) ...[
-                    Image.network(
-                      director.profilePath ?? "",
-                      height: 80,
-                      width: 50,
-                      fit: BoxFit.cover,
-                    ),
-                  ] else ...[
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade400,
-                        borderRadius: BorderRadius.circular(6),
+              SizedBox(
+                width: 75,
+                child: Column(
+                  mainAxisAlignment: .start,
+                  children: [
+                    if (director.profilePath != null) ...[
+                      Image.network(
+                        director.profilePath ?? "",
+                        height: 80,
+                        width: 50,
+                        fit: BoxFit.cover,
                       ),
-                      child: Icon(Icons.person, size: 50),
+                    ] else ...[
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade400,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Icon(Icons.person, size: 50),
+                      ),
+                    ],
+                    SizedBox(height: 5),
+                    Text(
+                      director.name ?? "N/A",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ],
-                  SizedBox(height: 5),
-                  Text(
-                    director.name ?? "N/A",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),

@@ -13,8 +13,8 @@ class MovieCubit extends Cubit<MovieStates> {
   void filterCrew(List<CrewModel> crew, MovieDetail movieDetail) {
     final cast = crew.where((c) => c.knownForDepartment == "Acting").toList();
     final director = crew.firstWhere(
-      (c) => c.knownForDepartment == "Directing",
-      orElse: () => CrewModel(name: "N/A", knownForDepartment: "Directing"),
+      (c) => c.job == "Director",
+      orElse: () => CrewModel(name: "N/A", job: "Director"),
     );
     emit(MovieSuccess(movieDetail, cast, director));
   }

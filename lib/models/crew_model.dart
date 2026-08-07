@@ -8,6 +8,7 @@ class CrewModel {
   int? id;
   String? knownForDepartment;
   String? name;
+  String? job;
   String? originalName;
   double? popularity;
   String? profilePath;
@@ -22,6 +23,7 @@ class CrewModel {
     this.id,
     this.knownForDepartment,
     this.name,
+    this.job,
     this.originalName,
     this.popularity,
     this.profilePath,
@@ -37,6 +39,7 @@ class CrewModel {
     int? id,
     String? knownForDepartment,
     String? name,
+    String? job,
     String? originalName,
     double? popularity,
     String? profilePath,
@@ -50,6 +53,7 @@ class CrewModel {
     id: id ?? this.id,
     knownForDepartment: knownForDepartment ?? this.knownForDepartment,
     name: name ?? this.name,
+    job: job ?? this.job,
     originalName: originalName ?? this.originalName,
     popularity: popularity ?? this.popularity,
     profilePath: profilePath ?? this.profilePath,
@@ -69,6 +73,7 @@ class CrewModel {
     id: json["id"],
     knownForDepartment: json["known_for_department"],
     name: json["name"],
+    job: json["job"],
     originalName: json["original_name"],
     popularity: json["popularity"]?.toDouble(),
     profilePath: json["profile_path"] != null
@@ -86,6 +91,7 @@ class CrewModel {
     "id": id,
     "known_for_department": knownForDepartment,
     "name": name,
+    "job": job,
     "original_name": originalName,
     "popularity": popularity,
     "profile_path": profilePath,

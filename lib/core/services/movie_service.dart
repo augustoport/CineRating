@@ -84,6 +84,13 @@ class MovieService {
         final crewMember = CrewModel.fromMap(c);
         crew.add(crewMember);
       });
+
+      res.data['crew'].forEach((c) {
+        final crewMember = CrewModel.fromMap(c);
+        if (crewMember.job == "Director") {
+          crew.add(crewMember);
+        }
+      });
       return crew;
     } on DioException {
       return null;

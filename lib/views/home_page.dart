@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../core/logic/cubit/home/home_cubit.dart';
 import '../shared/themes/app_colors.dart';
+import '../widgets/custom_app_bar.dart';
 import '../widgets/session_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -63,46 +64,49 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: CustomAppBar(
+          padding: media.padding.top + 20,
+          onMenuPressed: () {
+            if (context.mounted) {
+              Scaffold.of(context).openDrawer();
+            }
+          },
+        ),
+      ),
       backgroundColor: AppColors.backgroundColor,
+      drawer: Drawer(
+        width: media.size.width * 0.7,
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(
+              title: const Text('Item 1'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: const Text('Item 2'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
+      ),
       body: Stack(
         children: [
           Column(
             children: [
-              Container(
-                padding: EdgeInsets.only(top: media.padding.top + 30),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [AppColors.primaryColor, AppColors.backgroundColor],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(10),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    InkWell(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: Icon(Icons.menu, color: Colors.white),
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        "CineRating",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20.0),
-                      child: Icon(Icons.menu, color: Colors.transparent),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
               Container(
                 margin: EdgeInsets.all(8),
                 decoration: BoxDecoration(

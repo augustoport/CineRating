@@ -9,6 +9,7 @@ class CastCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: .start,
       children: [
         if (actor?.profilePath != null) ...[
           ClipRRect(
@@ -45,35 +46,35 @@ class CastCard extends StatelessWidget {
           ),
         ],
         SizedBox(height: 10),
-        Column(
-          children: [
-            Text(
-              actor?.name ?? "N/A",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            if (roles.isNotEmpty)
+        SizedBox(
+          width: 75,
+          child: Column(
+            children: [
               Text(
-                "as ${roles.first.character}",
-                style: TextStyle(color: Colors.white, fontSize: 10),
+                actor?.name ?? "N/A",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
-                maxLines: 2,
               ),
-            if (roles.isEmpty)
-              SizedBox(
-                width: 70,
-                child: Text(
+              if (roles.isNotEmpty)
+                Text(
+                  "as ${roles.first.character}",
+                  style: TextStyle(color: Colors.white, fontSize: 10),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                ),
+              if (roles.isEmpty)
+                Text(
                   "as ${actor?.character}",
                   style: TextStyle(color: Colors.white, fontSize: 10),
                   textAlign: TextAlign.center,
                   maxLines: 2,
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ],
     );
