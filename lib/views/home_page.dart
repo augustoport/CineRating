@@ -64,51 +64,25 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: CustomAppBar(
-          padding: media.padding.top + 20,
-          onMenuPressed: () {
-            if (context.mounted) {
-              Scaffold.of(context).openDrawer();
-            }
-          },
+      appBar: AppBar(
+        bottomOpacity: 20,
+        foregroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          "WikiCine",
+          style: TextStyle(color: Colors.white, fontSize: 20),
         ),
+        backgroundColor: AppColors.primaryColor,
+        elevation: 0,
       ),
       backgroundColor: AppColors.backgroundColor,
-      drawer: Drawer(
-        width: media.size.width * 0.7,
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: Drawer(width: media.size.width * 0.7, child: DrawerWidget()),
       body: Stack(
         children: [
           Column(
             children: [
               Container(
-                margin: EdgeInsets.all(8),
+                margin: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(color: Colors.white),
@@ -197,6 +171,71 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DrawerWidget extends StatelessWidget {
+  const DrawerWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color:  AppColors.backgroundColor,
+      ),
+      child: Column(
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Image.asset(
+                    "assets/img/logo_mini.png",
+                    width: 50,
+                    height: 50,
+                  ),
+                  Text(
+                    "Olá, Augusto",
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.person, color: Colors.white),
+            title: Text("Profile", style: TextStyle(color: Colors.white)),
+            onTap: () {
+              Navigator.pop(context);
+              BlocProvider.of<HomeCubit>(context).getMovies();
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.settings, color: Colors.white),
+            title: Text("Settings", style: TextStyle(color: Colors.white)),
+            onTap: () {
+              Navigator.pop(context);
+              BlocProvider.of<HomeCubit>(context).getTvShows();
+            },
+          ),
+          Spacer(),
+          Padding(
+            padding:  EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 30),
+            child: ListTile(
+              leading: Icon(Icons.exit_to_app, color: Colors.white),
+              title: Text("Exit", style: TextStyle(color: Colors.white)),
+              onTap: () {
+                Navigator.pop(context);
               },
             ),
           ),
