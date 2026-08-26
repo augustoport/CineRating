@@ -5,9 +5,9 @@ import 'package:cinerating/widgets/navigation_blur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../controllers/home_controller.dart';
 import '../core/logic/cubit/home/home_cubit.dart';
 import '../shared/themes/app_colors.dart';
-import '../widgets/custom_app_bar.dart';
 import '../widgets/session_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   HomeCubit homeCubit = HomeCubit();
-  final TextEditingController _searchController = TextEditingController();
+  HomeController homeController = HomeController();
 
   @override
   initState() {
@@ -31,33 +31,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   dispose() {
-    _searchController.dispose();
+    homeController.searchController.dispose();
     super.dispose();
-  }
-
-  void setList(String? search) async {
-    final state = homeCubit.state;
-
-    if (state is HomeMovie) {
-      if (search != null && search != "") {
-        homeCubit.getMovie(search);
-      } else {
-        homeCubit.getMovies();
-      }
-    } else if (state is HomeTv) {
-      if (search != null && search != "") {
-        homeCubit.getTvShow(search);
-      } else {
-        homeCubit.getTvShows();
-      }
-    }
-    // } else if (state is HomePeople) {
-    //   if (search != null && search != "") {
-    //     homeCubit.getPersonByName(search);
-    //   } else {
-    //     homeCubit.getPeople();
-    //   }
-    // }
   }
 
   @override
@@ -96,11 +71,14 @@ class _HomePageState extends State<HomePage> {
                     contentPadding: EdgeInsets.only(left: 15),
                     border: InputBorder.none,
                   ),
-                  controller: _searchController,
+                  controller: homeController.searchController,
 
                   onEditingComplete: () {
-                    setList(_searchController.text);
-                    _searchController.clear();
+                    homeController.setList(
+                      homeController.searchController.text,
+                      homeCubit,
+                    );
+                    homeController.searchController.clear();
                   },
                 ),
               ),
@@ -186,15 +164,11 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color:  AppColors.backgroundColor,
-      ),
+      decoration: BoxDecoration(color: AppColors.backgroundColor),
       child: Column(
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor,
-            ),
+            decoration: BoxDecoration(color: AppColors.primaryColor),
             child: Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -230,7 +204,9 @@ class DrawerWidget extends StatelessWidget {
           ),
           Spacer(),
           Padding(
-            padding:  EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 30),
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom + 30,
+            ),
             child: ListTile(
               leading: Icon(Icons.exit_to_app, color: Colors.white),
               title: Text("Exit", style: TextStyle(color: Colors.white)),
