@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "630945291002",
+    "project_id": "cinerating633",
+    "storage_bucket": "cinerating633.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630945291002:android:baea8a56616268805e4743",
+        "android_client_info": {
+          "package_name": "br.com.fourinnovation.scanning.cinerating"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpGh01lI85x1tsiLpZY6nUAMJzNWSjO-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
