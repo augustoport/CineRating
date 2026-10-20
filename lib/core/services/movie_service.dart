@@ -6,8 +6,8 @@ import '../../shared/env.dart';
 import '../../models/movie_simple_model.dart';
 
 class MovieService {
-  final url = Environment.apiBaseUrl;
-  final token = Environment.token;
+  final url = Environment.production.baseUrl;
+  final token = Environment.production.token;
 
   Future<List<MovieSimple>?> getMovies() async {
     try {

@@ -7,8 +7,8 @@ import '../../models/movie_simple_model.dart';
 import '../../shared/env.dart';
 
 class TvService {
-  final url = Environment.apiBaseUrl;
-  final token = Environment.token;
+  final url = Environment.production.baseUrl;
+  final token = Environment.production.token;
 
   Future<List<MovieSimple>?> getTvShows() async {
     try {

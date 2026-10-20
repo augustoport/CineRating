@@ -80,7 +80,7 @@ class MovieSimple {
     adult: json["adult"],
     backdropPath: json["backdrop_path"] == null
         ? null
-        : Environment.mediaUrl + json["backdrop_path"],
+        : Environment.production.mediaUrl + json["backdrop_path"],
     genreIds: json["genre_ids"] == null
         ? []
         : List<int>.from(json["genre_ids"]!.map((x) => x)),
@@ -91,7 +91,7 @@ class MovieSimple {
     popularity: json["popularity"]?.toDouble(),
     posterPath: json["poster_path"] == null
         ? null
-        : Environment.mediaUrl + json["poster_path"],
+        : Environment.production.mediaUrl + json["poster_path"],
     releaseDate: json["release_date"] == null || json["release_date"] == ""
         ? null
         : DateTime.parse(json["release_date"]),

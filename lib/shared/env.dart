@@ -1,9 +1,20 @@
-class Environment {
-  static const String apiBaseUrl = 'https://api.themoviedb.org/3';
+enum Environment {
+  production(
+    baseUrl: 'https://api.themoviedb.org/3',
+    mediaUrl: 'https://media.themoviedb.org/t/p/w400',
+    token: String.fromEnvironment('TOKEN'),
+    apiKey: String.fromEnvironment('API_KEY'),
+  );
 
-  static const String mediaUrl = 'https://media.themoviedb.org/t/p/w400';
+  final String baseUrl;
+  final String mediaUrl;
+  final String token;
+  final String apiKey;
 
-  static const String token = String.fromEnvironment('TOKEN');
-
-  static const String apikey = String.fromEnvironment('API_KEY');
+  const Environment({
+    required this.baseUrl,
+    required this.mediaUrl,
+    required this.token,
+    required this.apiKey,
+  });
 }

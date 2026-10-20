@@ -77,7 +77,7 @@ class CrewModel {
     originalName: json["original_name"],
     popularity: json["popularity"]?.toDouble(),
     profilePath: json["profile_path"] != null
-        ? Environment.mediaUrl + json["profile_path"]
+        ? Environment.production.mediaUrl + json["profile_path"]
         : null,
     castId: json["cast_id"],
     character: json["character"],

@@ -113,7 +113,7 @@ class Cast {
     popularity: json["popularity"]?.toDouble(),
     profilePath: json["profile_path"] == null
         ? null
-        : Environment.mediaUrl + json["profile_path"],
+        : Environment.production.mediaUrl + json["profile_path"],
     roles: json["roles"] == null
         ? []
         : List<Role>.from(json["roles"]!.map((x) => Role.fromMap(x))),

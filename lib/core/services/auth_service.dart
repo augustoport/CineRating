@@ -11,7 +11,7 @@ class AuthService {
     required String accessToken,
   })  : _dio = Dio(
           BaseOptions(
-            baseUrl: Environment.apiBaseUrl,
+            baseUrl: Environment.production.baseUrl,
             headers: {
               'Authorization': 'Bearer $accessToken',
               'Content-Type': 'application/json',

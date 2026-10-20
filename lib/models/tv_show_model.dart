@@ -148,7 +148,7 @@ class TvShowModel {
     adult: json["adult"],
     backdropPath: json["backdrop_path"] == null
         ? null
-        : Environment.mediaUrl + json["backdrop_path"],
+        : Environment.production.mediaUrl + json["backdrop_path"],
     createdBy: json["created_by"] == null
         ? []
         : List<CreatedBy>.from(
@@ -191,7 +191,7 @@ class TvShowModel {
     popularity: json["popularity"]?.toDouble(),
     posterPath: json["poster_path"] == null
         ? null
-        : Environment.mediaUrl + json["poster_path"],
+        : Environment.production.mediaUrl + json["poster_path"],
     productionCompanies: json["production_companies"] == null
         ? []
         : List<Network>.from(

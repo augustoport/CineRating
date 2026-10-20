@@ -120,7 +120,7 @@ class MovieDetail {
     adult: json["adult"],
     backdropPath: json["backdrop_path"] == null
         ? null
-        : "${Environment.mediaUrl}${json["backdrop_path"]}",
+        : "${Environment.production.mediaUrl}${json["backdrop_path"]}",
     belongsToCollection: json["belongs_to_collection"] == null
         ? null
         : BelongsToCollection.fromMap(json["belongs_to_collection"]),
@@ -140,7 +140,7 @@ class MovieDetail {
     popularity: json["popularity"]?.toDouble(),
     posterPath: json["poster_path"] == null
         ? null
-        : "${Environment.mediaUrl}${json["poster_path"]}",
+        : "${Environment.production .mediaUrl}${json["poster_path"]}",
     productionCompanies: json["production_companies"] == null
         ? []
         : List<ProductionCompany>.from(
