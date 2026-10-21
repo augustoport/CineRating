@@ -174,6 +174,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   void initState() {
     super.initState();
     loginController.checkExistingSession();
+    loginController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override

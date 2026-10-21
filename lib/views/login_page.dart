@@ -34,13 +34,25 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _handleLogin() async {
     if (loginController.emailController.text.isEmpty ||
         loginController.passwordController.text.isEmpty) {
-      setState(() {
-        loginController.errorMessage = 'Preencha todos os campos';
-      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Preencha todos os campos'),
+          backgroundColor: Colors.red,
+        ),
+      );
       return;
     }
 
     final success = await loginController.login();
+
+    if (!success && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Usuário/Senha incorreto(s)'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
 
     if (success && mounted) {
       Navigator.pushReplacement(
@@ -78,14 +90,6 @@ class _LoginPageState extends State<LoginPage> {
             isPassword: true,
           ),
           SizedBox(height: 10),
-          if (loginController.errorMessage != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Text(
-                loginController.errorMessage!,
-                style: TextStyle(color: Colors.red, fontSize: 12),
-              ),
-            ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Row(

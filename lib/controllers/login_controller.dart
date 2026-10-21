@@ -9,7 +9,6 @@ class LoginController extends ChangeNotifier {
   TextEditingController passwordController = TextEditingController();
 
   bool isLoading = false;
-  String? errorMessage;
   User? currentUser;
 
   late final AuthService _authService;
@@ -20,7 +19,6 @@ class LoginController extends ChangeNotifier {
 
   Future<bool> login() async {
     isLoading = true;
-    errorMessage = null;
     notifyListeners();
 
     try {
@@ -34,7 +32,6 @@ class LoginController extends ChangeNotifier {
       notifyListeners();
       return true;
     } catch (e) {
-      errorMessage = 'Erro ao fazer login: ${e.toString()}';
       isLoading = false;
       notifyListeners();
       return false;
