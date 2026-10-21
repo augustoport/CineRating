@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:cinerating/shared/env.dart';
+import 'package:cinerating/views/profile_page.dart';
 import 'package:cinerating/widgets/content_list.dart';
 import 'package:cinerating/widgets/navigation_blur.dart';
 import 'package:flutter/material.dart';
@@ -203,30 +205,32 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(color: AppColors.primaryColor),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Image.asset(
-                    "assets/img/logo_mini.png",
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ClipOval(
+                  child: Image.network(
+                    Environment.production.mediaUrl +
+                        (loginController.currentUser?.avatar.tmdb.avatarPath ??
+                            ""),
                     width: 50,
                     height: 50,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: "Olá, \n",
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                     children: [
-                      Text(
-                        "Olá,",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                      Text(
-                        loginController.currentUser?.name ?? "Usuário",
+                      TextSpan(
+                        text: loginController.currentUser?.name ?? "Usuário",
                         style: TextStyle(color: Colors.white, fontSize: 24),
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           ListTile(
@@ -234,7 +238,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: Text("Profile", style: TextStyle(color: Colors.white)),
             onTap: () {
               Navigator.pop(context);
-              BlocProvider.of<HomeCubit>(context).getMovies();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
             },
           ),
           ListTile(
