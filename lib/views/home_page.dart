@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../controllers/home_controller.dart';
+import '../controllers/login_controller.dart';
 import '../core/logic/cubit/home/home_cubit.dart';
 import '../shared/themes/app_colors.dart';
 import '../widgets/session_card.dart';
+import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -158,8 +160,37 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class DrawerWidget extends StatelessWidget {
+class DrawerWidget extends StatefulWidget {
   const DrawerWidget({super.key});
+
+  @override
+  State<DrawerWidget> createState() => _DrawerWidgetState();
+}
+
+class _DrawerWidgetState extends State<DrawerWidget> {
+  final LoginController loginController = LoginController();
+
+  @override
+  void initState() {
+    super.initState();
+    loginController.checkExistingSession();
+  }
+
+  @override
+  void dispose() {
+    loginController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleLogout() async {
+    await loginController.logout();
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,9 +209,18 @@ class DrawerWidget extends StatelessWidget {
                     width: 50,
                     height: 50,
                   ),
-                  Text(
-                    "Olá, Augusto",
-                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Olá,",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                      Text(
+                        loginController.currentUser?.name ?? "Usuário",
+                        style: TextStyle(color: Colors.white, fontSize: 24),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -210,9 +250,7 @@ class DrawerWidget extends StatelessWidget {
             child: ListTile(
               leading: Icon(Icons.exit_to_app, color: Colors.white),
               title: Text("Exit", style: TextStyle(color: Colors.white)),
-              onTap: () {
-                Navigator.pop(context);
-              },
+              onTap: _handleLogout,
             ),
           ),
         ],
