@@ -1,30 +1,28 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../models/user_model.dart';
 import '../../shared/env.dart';
 
 class AuthService {
   final Dio _dio;
   final FlutterSecureStorage _storage;
 
-  AuthService({
-    required String accessToken,
-  })  : _dio = Dio(
-          BaseOptions(
-            baseUrl: Environment.production.baseUrl,
-            headers: {
-              'Authorization': 'Bearer $accessToken',
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-            },
-          ),
+  AuthService({required String accessToken})
+    : _dio = Dio(
+        BaseOptions(
+          baseUrl: Environment.production.baseUrl,
+          headers: {
+            'Authorization': 'Bearer $accessToken',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
         ),
-        _storage = const FlutterSecureStorage();
+      ),
+      _storage = const FlutterSecureStorage();
 
   Future<String> createRequestToken() async {
-    final response = await _dio.get(
-      '/authentication/token/new',
-    );
+    final response = await _dio.get('/authentication/token/new');
 
     return response.data['request_token'];
   }
@@ -49,15 +47,13 @@ class AuthService {
   Future<String> createSession(String requestToken) async {
     final response = await _dio.post(
       '/authentication/session/new',
-      data: {
-        'request_token': requestToken,
-      },
+      data: {'request_token': requestToken},
     );
 
     return response.data['session_id'];
   }
 
-  Future<String> login({
+  Future<User> login({
     required String username,
     required String password,
   }) async {
@@ -72,28 +68,42 @@ class AuthService {
     );
 
     // 3. Cria a sessão
-    final sessionId = await createSession(
-      validatedToken,
-    );
+    final sessionId = await createSession(validatedToken);
 
     // 4. Salva a sessão
-    await _storage.write(
-      key: 'tmdb_session_id',
-      value: sessionId,
+    await _storage.write(key: 'tmdb_session_id', value: sessionId);
+
+    // 5. Busca dados do usuário
+    final user = await getAccountDetails(sessionId);
+
+    return user;
+  }
+
+  Future<User> getAccountDetails(String sessionId) async {
+    final response = await _dio.get(
+      '/account',
+      queryParameters: {'session_id': sessionId},
     );
 
-    return sessionId;
+    return User.fromJson(response.data, sessionId);
   }
 
   Future<String?> getSessionId() {
-    return _storage.read(
-      key: 'tmdb_session_id',
-    );
+    return _storage.read(key: 'tmdb_session_id');
+  }
+
+  Future<User?> getCurrentUser() async {
+    final sessionId = await getSessionId();
+    if (sessionId == null) return null;
+
+    try {
+      return await getAccountDetails(sessionId);
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<void> clearSession() {
-    return _storage.delete(
-      key: 'tmdb_session_id',
-    );
+    return _storage.delete(key: 'tmdb_session_id');
   }
 }
