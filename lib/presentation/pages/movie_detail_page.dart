@@ -1,8 +1,8 @@
+import 'package:cinerating/presentation/bloc/movie_detail/movie_cubit.dart';
+import 'package:cinerating/presentation/widgets/content_detail.dart';
+import 'package:cinerating/core/shared/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../core/logic/cubit/movie_detail/movie_cubit.dart';
-import '../../shared/themes/app_colors.dart';
-import '../widgets/content_detail.dart';
 
 class MovieDetailPage extends StatefulWidget {
   final String movieId;
@@ -26,7 +26,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final media = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
       appBar: AppBar(

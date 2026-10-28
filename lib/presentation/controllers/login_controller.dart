@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../core/locator.dart';
 import '../../../domain/entities/user.dart';
+import '../../../domain/usecases/get_current_user_usecase.dart';
 import '../../../domain/usecases/login_usecase.dart';
+import '../../../domain/usecases/logout_usecase.dart';
 
 class LoginController extends ChangeNotifier {
   TextEditingController emailController = TextEditingController();
@@ -12,6 +14,8 @@ class LoginController extends ChangeNotifier {
   User? currentUser;
 
   final LoginUseCase _loginUseCase = getIt<LoginUseCase>();
+  final GetCurrentUserUseCase _getCurrentUserUseCase = getIt<GetCurrentUserUseCase>();
+  final LogoutUseCase _logoutUseCase = getIt<LogoutUseCase>();
 
   Future<bool> login() async {
     isLoading = true;
@@ -35,12 +39,15 @@ class LoginController extends ChangeNotifier {
   }
 
   Future<void> checkExistingSession() async {
-    // TODO: Implementar use case para getCurrentUser
-    // Por enquanto, manter sessão vazia
+    final user = await _getCurrentUserUseCase();
+    if (user != null) {
+      currentUser = user;
+      notifyListeners();
+    }
   }
 
   Future<void> logout() async {
-    // TODO: Implementar use case para logout
+    await _logoutUseCase();
     currentUser = null;
     emailController.clear();
     passwordController.clear();

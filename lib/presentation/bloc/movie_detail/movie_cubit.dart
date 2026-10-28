@@ -1,14 +1,15 @@
 import 'package:bloc/bloc.dart';
 
-import '../../../../data/models/crew_model.dart';
-import '../../../../data/models/movie_detail_model.dart';
-import '../../../services/movie_service.dart';
+import '../../../core/locator.dart';
+import '../../../core/services/movie_service.dart';
+import '../../../data/models/crew_model.dart';
+import '../../../data/models/movie_detail_model.dart';
 
 part 'movie_states.dart';
 
 class MovieCubit extends Cubit<MovieStates> {
   MovieCubit() : super(MovieInitial());
-  final MovieService _repo = MovieService();
+  final _repo = getIt<MovieService>();
 
   void filterCrew(List<CrewModel> crew, MovieDetail movieDetail) {
     final cast = crew.where((c) => c.knownForDepartment == "Acting").toList();

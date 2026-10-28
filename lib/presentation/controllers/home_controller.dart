@@ -1,6 +1,5 @@
+import 'package:cinerating/presentation/bloc/home/home_cubit.dart';
 import 'package:flutter/material.dart';
-
-import '../../../core/logic/cubit/home/home_cubit.dart';
 
 class HomeController {
   final TextEditingController searchController = TextEditingController();

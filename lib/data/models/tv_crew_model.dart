@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../shared/env.dart';
+import '../../core/shared/env.dart';
 
 class TvShowCrew {
   List<Cast>? cast;

@@ -15,6 +15,8 @@ lib/
 │   │   └── tv_repository.dart
 │   └── usecases/             # Casos de uso (lógica de negócio)
 │       ├── login_usecase.dart
+│       ├── get_current_user_usecase.dart
+│       ├── logout_usecase.dart
 │       ├── get_movies_usecase.dart
 │       ├── search_movies_usecase.dart
 │       ├── get_tv_shows_usecase.dart
@@ -41,15 +43,33 @@ lib/
 │       └── tv_repository_impl.dart
 │
 ├── presentation/             # Camada de Apresentação (UI)
-│   ├── bloc/                # Blocs/Cubits (ainda em core/logic/cubit por compatibilidade)
+│   ├── bloc/                # Blocs/Cubits
+│   │   ├── home/
+│   │   ├── movie_detail/
+│   │   └── serie_detail/
 │   ├── controllers/         # Controllers
-│   ├── pages/               # Páginas (ainda em views por compatibilidade)
+│   │   └── login_controller.dart
+│   ├── pages/               # Páginas
+│   │   ├── login_page.dart
+│   │   ├── home_page.dart
+│   │   ├── movie_detail_page.dart
+│   │   ├── tv_show_detail_page.dart
+│   │   └── profile_page.dart
 │   └── widgets/             # Widgets reutilizáveis
+│       ├── content_list.dart
+│       ├── content_detail.dart
+│       ├── cast_card.dart
+│       ├── movie_card.dart
+│       ├── navigation_blur.dart
+│       ├── session_card.dart
+│       └── text_field_custom.dart
 │
 ├── core/                     # Configurações e utilitários globais
 │   ├── locator.dart         # Service Locator (Get It)
-│   ├── services/            # Serviços legados (serão removidos gradualmente)
-│   └── logic/               # Blocs/Cubits
+│   └── services/            # Serviços legados (usados por cubits de detalhes)
+│       ├── auth_service.dart
+│       ├── movie_service.dart
+│       └── tv_service.dart
 │
 ├── shared/                   # Recursos compartilhados
 │   ├── themes/              # Temas
@@ -83,10 +103,9 @@ Entities
 3. **Data**: `AuthRepositoryImpl` implementa `AuthRepository`
 4. **Data**: `AuthRepositoryImpl` usa `AuthRemoteDataSource`
 5. **Data**: `AuthRemoteDataSourceImpl` faz requisição HTTP
-6. **Data**: Retorna `UserModel` (DTO)
-7. **Data**: `AuthRepositoryImpl` converte para `User` (Entity)
-8. **Domain**: `LoginUseCase` retorna `User` (Entity)
-9. **Presentation**: `LoginController` recebe `User` e atualiza UI
+6. **Data**: Retorna `User` (Entity direto do datasource)
+7. **Domain**: `LoginUseCase` retorna `User` (Entity)
+8. **Presentation**: `LoginController` recebe `User` e atualiza UI
 
 ## Benefícios
 
@@ -111,16 +130,36 @@ Entities
 - Fácil trocar implementações (ex: mudar de Dio para outra lib HTTP)
 - Fácil adicionar caching, logging, etc.
 
-## Próximos Passos
+## Status da Migração
 
-1. ❌ Remover serviços legados (`AuthService`, `MovieService`, `TvService`)
-2. ❌ Mover controllers para `presentation/controllers`
-3. ❌ Mover views para `presentation/pages`
-4. ❌ Mover widgets para `presentation/widgets`
-5. ❌ Mover blocs/cubits para `presentation/bloc`
-6. ❌ Adicionar use cases para getCurrentUser e logout
-7. ❌ Adicionar repository local (SQLite/SharedPreferences)
-8. ❌ Adicionar testes unitários
+### ✅ Concluído
+- [x] Estrutura de diretórios Clean Architecture
+- [x] Entidades em `domain/entities/`
+- [x] Repositories (interfaces) em `domain/repositories/`
+- [x] Use Cases em `domain/usecases/`
+- [x] DataSources em `data/datasources/`
+- [x] Models em `data/models/`
+- [x] Repository Implementations em `data/repositories/`
+- [x] Views movidas para `presentation/pages/`
+- [x] Widgets movidos para `presentation/widgets/`
+- [x] Controllers movidos para `presentation/controllers/`
+- [x] Blocs/Cubits movidos para `presentation/bloc/`
+- [x] Use cases completos (Login, GetCurrentUser, Logout, GetMovies, SearchMovies, GetTvShows, SearchTvShows)
+- [x] Locator configurado com todas as dependências
+- [x] LoginController usando Clean Architecture
+- [x] HomeCubit usando Clean Architecture
+
+### ⚠️ Parcialmente Migrado
+- [~] Cubits de detalhes (movie_detail, serie_detail) ainda usam serviços legados
+  - Motivo: Necessitam de funcionalidades específicas não implementadas nos novos use cases
+  - Solução futura: Criar use cases específicos para detalhes
+
+### 📝 Próximos Passos (Opcionais)
+1. Criar use cases para detalhes de filmes e séries
+2. Migrar cubits de detalhes para usar novos use cases
+3. Remover serviços legados completamente
+4. Adicionar repository local (SQLite/SharedPreferences)
+5. Adicionar testes unitários para cada camada
 
 ## Legado vs Clean Architecture
 
@@ -145,3 +184,35 @@ Pages → Controllers → Use Cases → Repositories → DataSources → API
 7. **Presentation**: Criar Controller/Bloc em `presentation/`
 8. **Presentation**: Criar Page em `presentation/pages/`
 9. **Core**: Registrar tudo no `locator.dart`
+
+## Service Locator (Get It)
+
+### Datasources (LazySingleton)
+- Criados na primeira solicitação
+- Única instância compartilhada
+- Usados por repositories
+
+### Repositories (LazySingleton)
+- Criados na primeira solicitação
+- Única instância compartilhada
+- Implementam interfaces do domain
+
+### Use Cases (Factory)
+- Nova instância a cada solicitação
+- Usam repositories
+- Usados por controllers/blocs
+
+### Controllers (Factory)
+- Nova instância a cada solicitação
+- Usam use cases
+- Gerenciam estado de UI
+
+### Cubits (Factory)
+- Nova instância a cada solicitação
+- Usam use cases ou serviços legados
+- Gerenciam estado de blocs
+
+### Serviços Legados (LazySingleton)
+- Criados na primeira solicitação
+- Única instância compartilhada
+- Usados temporariamente por cubits de detalhes

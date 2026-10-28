@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../domain/entities/tv_show.dart';
 import '../../data/models/movie_simple_model.dart';
-import '../../shared/env.dart';
+import '../../core/shared/env.dart';
 import 'tv_remote_datasource.dart';
 
 class TvRemoteDataSourceImpl implements TvRemoteDataSource {

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../domain/entities/user.dart';
-import '../../shared/env.dart';
+import '../shared/env.dart';
 
 class AuthService {
   final Dio _dio;

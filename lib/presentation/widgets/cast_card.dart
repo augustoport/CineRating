@@ -1,4 +1,3 @@
-import 'package:cinerating/data/models/crew_model.dart';
 import 'package:flutter/material.dart';
 
 class CastCard extends StatelessWidget {

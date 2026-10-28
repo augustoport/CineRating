@@ -3,7 +3,7 @@ import 'package:cinerating/data/models/tv_show_model.dart';
 import 'package:dio/dio.dart';
 
 import '../../data/models/movie_simple_model.dart';
-import '../../shared/env.dart';
+import '../shared/env.dart';
 
 class TvService {
   final url = Environment.production.baseUrl;

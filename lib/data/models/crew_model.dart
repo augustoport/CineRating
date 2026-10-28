@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cinerating/shared/env.dart';
+import 'package:cinerating/core/shared/env.dart';
 
 class CrewModel {
   bool? adult;

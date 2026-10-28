@@ -1,15 +1,16 @@
 import 'package:cinerating/presentation/pages/profile_page.dart';
 import 'package:cinerating/presentation/widgets/content_list.dart';
 import 'package:cinerating/presentation/widgets/navigation_blur.dart';
+import 'package:cinerating/presentation/widgets/session_card.dart';
+import 'package:cinerating/presentation/controllers/home_controller.dart';
+import 'package:cinerating/presentation/controllers/login_controller.dart';
+import 'package:cinerating/presentation/bloc/home/home_cubit.dart';
+import 'package:cinerating/core/locator.dart';
+import 'package:cinerating/core/shared/env.dart';
+import 'package:cinerating/core/shared/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cinerating/core/logic/cubit/home/home_cubit.dart';
-import 'package:cinerating/core/locator.dart';
-import 'package:cinerating/presentation/widgets/session_card.dart';
-import '../../shared/env.dart';
-import '../../shared/themes/app_colors.dart';
-import '../controllers/controllers/home_controller.dart';
-import '../controllers/controllers/login_controller.dart';
+
 import 'login_page.dart';
 
 class HomePage extends StatefulWidget {

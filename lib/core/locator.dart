@@ -1,7 +1,11 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
-import '../core/logic/cubit/home/home_cubit.dart';
+import '../presentation/bloc/home/home_cubit.dart';
+import '../presentation/controllers/login_controller.dart';
+import './services/auth_service.dart';
+import './services/movie_service.dart';
+import './services/tv_service.dart';
 import '../data/datasources/auth_remote_datasource.dart';
 import '../data/datasources/auth_remote_datasource_impl.dart';
 import '../data/datasources/movie_remote_datasource.dart';
@@ -14,12 +18,14 @@ import '../data/repositories/tv_repository_impl.dart';
 import '../domain/repositories/auth_repository.dart';
 import '../domain/repositories/movie_repository.dart';
 import '../domain/repositories/tv_repository.dart';
+import '../domain/usecases/get_current_user_usecase.dart';
 import '../domain/usecases/get_movies_usecase.dart';
 import '../domain/usecases/get_tv_shows_usecase.dart';
 import '../domain/usecases/login_usecase.dart';
+import '../domain/usecases/logout_usecase.dart';
 import '../domain/usecases/search_movies_usecase.dart';
 import '../domain/usecases/search_tv_shows_usecase.dart';
-import '../presentation/controllers/controllers/login_controller.dart';
+import 'shared/env.dart';
 
 final getIt = GetIt.instance;
 
@@ -58,6 +64,14 @@ void setupLocator() {
     () => LoginUseCase(getIt<AuthRepository>()),
   );
 
+  getIt.registerFactory<GetCurrentUserUseCase>(
+    () => GetCurrentUserUseCase(getIt<AuthRepository>()),
+  );
+
+  getIt.registerFactory<LogoutUseCase>(
+    () => LogoutUseCase(getIt<AuthRepository>()),
+  );
+
   getIt.registerFactory<GetMoviesUseCase>(
     () => GetMoviesUseCase(getIt<MovieRepository>()),
   );
@@ -74,9 +88,18 @@ void setupLocator() {
     () => SearchTvShowsUseCase(getIt<TvRepository>()),
   );
 
-  // Controllers (manter compatibilidade temporária)
+  // Controllers
   getIt.registerFactory<LoginController>(() => LoginController());
 
-  // Cubits (manter compatibilidade temporária)
+  // Cubits
   getIt.registerFactory<HomeCubit>(() => HomeCubit());
+
+  // Serviços legados (usados por cubits de detalhes)
+  getIt.registerLazySingleton<AuthService>(
+    () => AuthService(accessToken: Environment.production.token),
+  );
+
+  getIt.registerLazySingleton<MovieService>(() => MovieService());
+
+  getIt.registerLazySingleton<TvService>(() => TvService());
 }

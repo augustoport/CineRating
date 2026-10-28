@@ -3,7 +3,7 @@ import 'package:cinerating/presentation/widgets/cast_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../shared/themes/app_colors.dart';
+import '../../core/shared/themes/app_colors.dart';
 
 class ContentDetail extends StatelessWidget {
   final dynamic content;

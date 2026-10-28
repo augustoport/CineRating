@@ -1,9 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cinerating/core/logic/cubit/serie_detail/serie_cubit.dart';
+import 'package:cinerating/presentation/bloc/serie_detail/serie_cubit.dart';
+import 'package:cinerating/presentation/widgets/content_detail.dart';
+import 'package:cinerating/core/shared/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../shared/themes/app_colors.dart';
-import '../widgets/content_detail.dart';
 
 class TvShowDetailPage extends StatefulWidget {
   final String id;
@@ -25,7 +25,6 @@ class _TvShowDetailPageState extends State<TvShowDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
       appBar: AppBar(
