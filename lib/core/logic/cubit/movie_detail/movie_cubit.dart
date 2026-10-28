@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 
-import '../../../../models/crew_model.dart';
-import '../../../../models/movie_detail_model.dart';
+import '../../../../data/models/crew_model.dart';
+import '../../../../data/models/movie_detail_model.dart';
 import '../../../services/movie_service.dart';
 
 part 'movie_states.dart';

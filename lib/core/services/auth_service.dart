@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../models/user_model.dart';
+import '../../domain/entities/user.dart';
 import '../../shared/env.dart';
 
 class AuthService {
@@ -85,7 +85,13 @@ class AuthService {
       queryParameters: {'session_id': sessionId},
     );
 
-    return User.fromJson(response.data, sessionId);
+    return User(
+      id: response.data['id'],
+      name: response.data['name'],
+      username: response.data['username'],
+      avatar: response.data['avatar'],
+      sessionId: sessionId,
+    );
   }
 
   Future<String?> getSessionId() {

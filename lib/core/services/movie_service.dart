@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 
-import '../../models/crew_model.dart';
-import '../../models/movie_detail_model.dart';
+import '../../data/models/crew_model.dart';
+import '../../data/models/movie_detail_model.dart';
+import '../../data/models/movie_simple_model.dart';
 import '../../shared/env.dart';
-import '../../models/movie_simple_model.dart';
 
 class MovieService {
   final url = Environment.production.baseUrl;

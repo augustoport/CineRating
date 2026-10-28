@@ -1,8 +1,8 @@
-import 'package:cinerating/models/tv_crew_model.dart';
-import 'package:cinerating/models/tv_show_model.dart';
+import 'package:cinerating/data/models/tv_crew_model.dart';
+import 'package:cinerating/data/models/tv_show_model.dart';
 import 'package:dio/dio.dart';
 
-import '../../models/movie_simple_model.dart';
+import '../../data/models/movie_simple_model.dart';
 import '../../shared/env.dart';
 
 class TvService {

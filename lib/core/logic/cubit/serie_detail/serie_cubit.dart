@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:cinerating/core/services/tv_service.dart';
-import 'package:cinerating/models/tv_show_model.dart';
+import 'package:cinerating/data/models/tv_show_model.dart';
 
-import '../../../../models/tv_crew_model.dart';
+import '../../../../data/models/tv_crew_model.dart';
 
 part 'serie_state.dart';
 
