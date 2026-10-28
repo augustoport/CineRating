@@ -20,8 +20,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final HomeCubit homeCubit = getIt<HomeCubit>();
-  HomeController homeController = HomeController();
+  final homeCubit = getIt<HomeCubit>();
+  final homeController = getIt<HomeController>();
 
   @override
   initState() {
