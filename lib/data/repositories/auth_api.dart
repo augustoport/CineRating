@@ -4,18 +4,18 @@ import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/data/auth_data.dart';
 
-class AuthRepositoryImpl implements AuthRepository {
-  final AuthData remoteDataSource;
+class AuthApi implements AuthRepository {
+  final AuthData authData;
   final FlutterSecureStorage storage;
 
-  AuthRepositoryImpl({
-    required this.remoteDataSource,
+  AuthApi({
+    required this.authData,
     required this.storage,
   });
 
   @override
   Future<User> login({required String username, required String password}) {
-    return remoteDataSource.login(username: username, password: password);
+    return authData.login(username: username, password: password);
   }
 
   @override
@@ -24,7 +24,7 @@ class AuthRepositoryImpl implements AuthRepository {
     if (sessionId == null) return null;
 
     try {
-      return await remoteDataSource.getAccountDetails(sessionId);
+      return await authData.getAccountDetails(sessionId);
     } catch (e) {
       return null;
     }

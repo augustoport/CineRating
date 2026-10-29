@@ -10,9 +10,9 @@ import '../data/datasources/data/movie_data.dart';
 import '../data/datasources/implementations/movie_implementation.dart';
 import '../data/datasources/data/tv_data.dart';
 import '../data/datasources/implementations/tv_implementation.dart';
-import '../data/repositories/auth_repository_impl.dart';
-import '../data/repositories/movie_repository_impl.dart';
-import '../data/repositories/tv_repository_impl.dart';
+import '../data/repositories/auth_api.dart';
+import '../data/repositories/movie_api.dart';
+import '../data/repositories/tv_api.dart';
 import '../domain/repositories/auth_repository.dart';
 import '../domain/repositories/movie_repository.dart';
 import '../domain/repositories/tv_repository.dart';
@@ -46,8 +46,8 @@ void setupLocator() {
 
   // Repositories
   getIt.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(
-      remoteDataSource: getIt<AuthData>(),
+    () => AuthApi(
+      authData: getIt<AuthData>(),
       storage: const FlutterSecureStorage(),
     ),
   );
