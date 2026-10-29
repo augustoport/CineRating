@@ -1,9 +1,9 @@
 import '../../domain/entities/tv_show.dart';
 import '../../domain/repositories/tv_repository.dart';
-import '../datasources/tv_remote_datasource.dart';
+import '../datasources/data/tv_data.dart';
 
 class TvRepositoryImpl implements TvRepository {
-  final TvRemoteDataSource remoteDataSource;
+  final TvData remoteDataSource;
 
   TvRepositoryImpl({required this.remoteDataSource});
 
@@ -20,5 +20,15 @@ class TvRepositoryImpl implements TvRepository {
   @override
   Future<TvShow> getTvShowDetails(String tvShowId) {
     return remoteDataSource.getTvShowDetails(tvShowId);
+  }
+
+  @override
+  Future<dynamic> getTvShowCrew(String tvShowId) {
+    return remoteDataSource.getTvShowCrew(tvShowId);
+  }
+
+  @override
+  Future<dynamic> getTvShowDetailsFull(String tvShowId) {
+    return remoteDataSource.getTvShowDetailsFull(tvShowId);
   }
 }

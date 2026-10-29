@@ -7,7 +7,7 @@ class MovieInitial extends MovieStates {}
 class MovieLoading extends MovieStates {}
 
 class MovieSuccess extends MovieStates {
-  final MovieDetail movieDetail;
+  final Movie movieDetail;
   final List<CrewModel> cast;
   final CrewModel director;
 

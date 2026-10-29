@@ -1,5 +1,6 @@
 class Movie {
-  final int id;
+  final int? id;
+  final int? runtime;
   final String? title;
   final String? name;
   final String? overview;
@@ -10,7 +11,8 @@ class Movie {
   final List<int>? genreIds;
 
   Movie({
-    required this.id,
+    this.id,
+    this.runtime,
     this.title,
     this.name,
     this.overview,

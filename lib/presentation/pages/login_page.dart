@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
           Image.asset('assets/img/logo.png'),
           TextFieldCustom(
             controller: loginController.emailController,
-            hintText: 'Email',
+            hintText: 'Usuário',
             onChanged: (value) {},
           ),
           SizedBox(height: 30),
@@ -122,6 +122,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Spacer(),
           InkWell(
+            splashColor: Colors.transparent,
             onTap: loginController.isLoading ? null : _handleLogin,
             child: Container(
               width: size.width * 0.8,

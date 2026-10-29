@@ -1,63 +1,56 @@
 import 'dart:convert';
 
 import '../../core/shared/env.dart';
+import '../../domain/entities/movie.dart';
 
-class MovieDetail {
+class MovieDetailModel extends Movie {
   bool? adult;
-  String? backdropPath;
   BelongsToCollection? belongsToCollection;
   int? budget;
   List<Genre>? genres;
   String? homepage;
-  int? id;
   String? imdbId;
   List<String>? originCountry;
   String? originalLanguage;
   String? originalTitle;
-  String? overview;
   double? popularity;
-  String? posterPath;
   List<ProductionCompany>? productionCompanies;
   List<ProductionCountry>? productionCountries;
-  DateTime? releaseDate;
   int? revenue;
-  int? runtime;
   String? status;
   String? tagline;
-  String? title;
   bool? video;
-  double? voteAverage;
   int? voteCount;
 
-  MovieDetail({
+  MovieDetailModel({
+    super.backdropPath,
+    super.overview,
+    super.posterPath,
+    super.releaseDate,
+    super.voteAverage,
+    super.title,
+    super.runtime,
+    super.id,
     this.adult,
-    this.backdropPath,
     this.belongsToCollection,
     this.budget,
     this.genres,
     this.homepage,
-    this.id,
     this.imdbId,
     this.originCountry,
     this.originalLanguage,
     this.originalTitle,
-    this.overview,
     this.popularity,
-    this.posterPath,
     this.productionCompanies,
     this.productionCountries,
-    this.releaseDate,
     this.revenue,
-    this.runtime,
     this.status,
     this.tagline,
-    this.title,
     this.video,
-    this.voteAverage,
     this.voteCount,
   });
 
-  MovieDetail copyWith({
+  MovieDetailModel copyWith({
     bool? adult,
     String? backdropPath,
     BelongsToCollection? belongsToCollection,
@@ -83,7 +76,7 @@ class MovieDetail {
     bool? video,
     double? voteAverage,
     int? voteCount,
-  }) => MovieDetail(
+  }) => MovieDetailModel(
     adult: adult ?? this.adult,
     backdropPath: backdropPath ?? this.backdropPath,
     belongsToCollection: belongsToCollection ?? this.belongsToCollection,
@@ -111,62 +104,63 @@ class MovieDetail {
     voteCount: voteCount ?? this.voteCount,
   );
 
-  factory MovieDetail.fromJson(String str) =>
-      MovieDetail.fromMap(json.decode(str));
+  factory MovieDetailModel.fromJson(String str) =>
+      MovieDetailModel.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory MovieDetail.fromMap(Map<String, dynamic> json) => MovieDetail(
-    adult: json["adult"],
-    backdropPath: json["backdrop_path"] == null
-        ? null
-        : "${Environment.production.mediaUrl}${json["backdrop_path"]}",
-    belongsToCollection: json["belongs_to_collection"] == null
-        ? null
-        : BelongsToCollection.fromMap(json["belongs_to_collection"]),
-    budget: json["budget"],
-    genres: json["genres"] == null
-        ? []
-        : List<Genre>.from(json["genres"]!.map((x) => Genre.fromMap(x))),
-    homepage: json["homepage"],
-    id: json["id"],
-    imdbId: json["imdb_id"],
-    originCountry: json["origin_country"] == null
-        ? []
-        : List<String>.from(json["origin_country"]!.map((x) => x)),
-    originalLanguage: json["original_language"],
-    originalTitle: json["original_title"],
-    overview: json["overview"],
-    popularity: json["popularity"]?.toDouble(),
-    posterPath: json["poster_path"] == null
-        ? null
-        : "${Environment.production.mediaUrl}${json["poster_path"]}",
-    productionCompanies: json["production_companies"] == null
-        ? []
-        : List<ProductionCompany>.from(
-            json["production_companies"]!.map(
-              (x) => ProductionCompany.fromMap(x),
-            ),
-          ),
-    productionCountries: json["production_countries"] == null
-        ? []
-        : List<ProductionCountry>.from(
-            json["production_countries"]!.map(
-              (x) => ProductionCountry.fromMap(x),
-            ),
-          ),
-    releaseDate: json["release_date"] == null
-        ? null
-        : DateTime.parse(json["release_date"]),
-    revenue: json["revenue"],
-    runtime: json["runtime"],
-    status: json["status"],
-    tagline: json["tagline"],
-    title: json["title"],
-    video: json["video"],
-    voteAverage: json["vote_average"]?.toDouble(),
-    voteCount: json["vote_count"],
-  );
+  factory MovieDetailModel.fromMap(Map<String, dynamic> json) =>
+      MovieDetailModel(
+        adult: json["adult"],
+        backdropPath: json["backdrop_path"] == null
+            ? null
+            : "${Environment.production.mediaUrl}${json["backdrop_path"]}",
+        belongsToCollection: json["belongs_to_collection"] == null
+            ? null
+            : BelongsToCollection.fromMap(json["belongs_to_collection"]),
+        budget: json["budget"],
+        genres: json["genres"] == null
+            ? []
+            : List<Genre>.from(json["genres"]!.map((x) => Genre.fromMap(x))),
+        homepage: json["homepage"],
+        id: json["id"],
+        imdbId: json["imdb_id"],
+        originCountry: json["origin_country"] == null
+            ? []
+            : List<String>.from(json["origin_country"]!.map((x) => x)),
+        originalLanguage: json["original_language"],
+        originalTitle: json["original_title"],
+        overview: json["overview"],
+        popularity: json["popularity"]?.toDouble(),
+        posterPath: json["poster_path"] == null
+            ? null
+            : "${Environment.production.mediaUrl}${json["poster_path"]}",
+        productionCompanies: json["production_companies"] == null
+            ? []
+            : List<ProductionCompany>.from(
+                json["production_companies"]!.map(
+                  (x) => ProductionCompany.fromMap(x),
+                ),
+              ),
+        productionCountries: json["production_countries"] == null
+            ? []
+            : List<ProductionCountry>.from(
+                json["production_countries"]!.map(
+                  (x) => ProductionCountry.fromMap(x),
+                ),
+              ),
+        releaseDate: json["release_date"] == null
+            ? null
+            : DateTime.parse(json["release_date"]),
+        revenue: json["revenue"],
+        runtime: json["runtime"],
+        status: json["status"],
+        tagline: json["tagline"],
+        title: json["title"],
+        video: json["video"],
+        voteAverage: json["vote_average"]?.toDouble(),
+        voteCount: json["vote_count"],
+      );
 
   Map<String, dynamic> toMap() => {
     "adult": adult,

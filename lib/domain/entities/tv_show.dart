@@ -1,5 +1,5 @@
 class TvShow {
-  final int id;
+  final int? id;
   final String? name;
   final String? overview;
   final String? posterPath;

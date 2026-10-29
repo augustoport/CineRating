@@ -9,13 +9,13 @@ class HomeLoading extends HomeStates {}
 class HomeMovie extends HomeStates {
   HomeMovie(this.movies);
 
-  final List<MovieSimple>? movies;
+  final List<Movie>? movies;
 }
 
 class HomeTv extends HomeStates {
   HomeTv(this.tvShows);
 
-  final List<MovieSimple>? tvShows;
+  final List<Movie>? tvShows;
 }
 
 class HomePeople extends HomeStates {}

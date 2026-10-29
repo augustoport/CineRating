@@ -9,17 +9,17 @@ class MovieService {
   final url = Environment.production.baseUrl;
   final token = Environment.production.token;
 
-  Future<List<MovieSimple>?> getMovies() async {
+  Future<List<MovieSimpleModel>?> getMovies() async {
     try {
       final Dio dio = Dio();
       dio.options.headers["Authorization"] = "Bearer $token";
 
       final res = await dio.get('$url/discover/movie');
 
-      List<MovieSimple> movies = [];
+      List<MovieSimpleModel> movies = [];
 
       res.data['results'].forEach((m) {
-        final movie = MovieSimple.fromMap(m);
+        final movie = MovieSimpleModel.fromMap(m);
         movies.add(movie);
       });
 
@@ -29,7 +29,7 @@ class MovieService {
     }
   }
 
-  Future<List<MovieSimple>?> getMovieByName({required String movie}) async {
+  Future<List<MovieSimpleModel>?> getMovieByName({required String movie}) async {
     try {
       final Dio dio = Dio();
       dio.options.headers["Authorization"] = "Bearer $token";
@@ -39,10 +39,10 @@ class MovieService {
         queryParameters: {"query": movie, "language": "en-US;pt-BR"},
       );
 
-      List<MovieSimple> movies = [];
+      List<MovieSimpleModel> movies = [];
 
       res.data['results'].forEach((m) {
-        final movie = MovieSimple.fromMap(m);
+        final movie = MovieSimpleModel.fromMap(m);
         movies.add(movie);
       });
 
@@ -54,16 +54,16 @@ class MovieService {
     }
   }
 
-  Future<MovieDetail> getMovieDetails({required String movieId}) async {
+  Future<MovieDetailModel> getMovieDetails({required String movieId}) async {
     try {
       final Dio dio = Dio();
       dio.options.headers["Authorization"] = "Bearer $token";
 
       final res = await dio.get('$url/movie/$movieId');
 
-      MovieDetail movieDetails = MovieDetail();
+      MovieDetailModel movieDetails = MovieDetailModel();
 
-      movieDetails = MovieDetail.fromMap(res.data);
+      movieDetails = MovieDetailModel.fromMap(res.data);
 
       return movieDetails;
     } on DioException {

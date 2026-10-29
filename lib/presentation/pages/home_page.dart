@@ -174,15 +174,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   @override
   void initState() {
     super.initState();
-    loginController.checkExistingSession();
-    loginController.addListener(() {
-      setState(() {});
-    });
+    if (loginController.currentUser == null) {
+      loginController.checkExistingSession();
+    }
   }
 
   @override
   void dispose() {
-    loginController.removeListener(() {});
     super.dispose();
   }
 
@@ -198,73 +196,87 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: AppColors.backgroundColor),
-      child: Column(
-        children: [
-          DrawerHeader(
-            decoration: BoxDecoration(color: AppColors.primaryColor),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ClipOval(
-                  child: Image.network(
-                    Environment.production.mediaUrl +
-                        (loginController.currentUser?.avatar.tmdb.avatarPath ??
-                            ""),
-                    width: 50,
-                    height: 50,
-                  ),
-                ),
-                RichText(
-                  text: TextSpan(
-                    text: "Olá, \n",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                    children: [
-                      TextSpan(
-                        text: loginController.currentUser?.name ?? "Usuário",
-                        style: TextStyle(color: Colors.white, fontSize: 24),
+    return ListenableBuilder(
+      listenable: loginController,
+      builder: (context, child) {
+        return Container(
+          decoration: BoxDecoration(color: AppColors.backgroundColor),
+          child: Column(
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(color: AppColors.primaryColor),
+                child: loginController.loadingDrawer
+                    ? CircularProgressIndicator()
+                    : Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ClipOval(
+                            child: Image.network(
+                                  (loginController.currentUser?.avatar?.tmdb ??
+                                      ""),
+                              width: 50,
+                              height: 50,
+                            ),
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              text: "Olá, \n",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text:
+                                      loginController.currentUser?.name ??
+                                      "Usuário",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+              ),
+              ListTile(
+                leading: Icon(Icons.person, color: Colors.white),
+                title: Text("Profile", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.settings, color: Colors.white),
+                title: Text("Settings", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  Navigator.pop(context);
+                  final homeCubit = getIt<HomeCubit>();
+                  homeCubit.getTvShows();
+                },
+              ),
+              Spacer(),
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).padding.bottom + 30,
                 ),
-              ],
-            ),
+                child: ListTile(
+                  leading: Icon(Icons.exit_to_app, color: Colors.white),
+                  title: Text("Exit", style: TextStyle(color: Colors.white)),
+                  onTap: _handleLogout,
+                ),
+              ),
+            ],
           ),
-          ListTile(
-            leading: Icon(Icons.person, color: Colors.white),
-            title: Text("Profile", style: TextStyle(color: Colors.white)),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.settings, color: Colors.white),
-            title: Text("Settings", style: TextStyle(color: Colors.white)),
-            onTap: () {
-              Navigator.pop(context);
-              final homeCubit = getIt<HomeCubit>();
-              homeCubit.getTvShows();
-            },
-          ),
-          Spacer(),
-          Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).padding.bottom + 30,
-            ),
-            child: ListTile(
-              leading: Icon(Icons.exit_to_app, color: Colors.white),
-              title: Text("Exit", style: TextStyle(color: Colors.white)),
-              onTap: _handleLogout,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

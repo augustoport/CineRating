@@ -1,43 +1,35 @@
 import 'dart:convert';
 
 import '../../core/shared/env.dart';
+import '../../domain/entities/movie.dart';
 
-class MovieSimple {
+class MovieSimpleModel extends Movie {
   bool? adult;
-  String? backdropPath;
-  List<int>? genreIds;
-  int? id;
   String? originalLanguage;
   String? originalTitle;
-  String? overview;
   double? popularity;
-  String? posterPath;
-  DateTime? releaseDate;
-  String? title;
-  String? name;
   bool? video;
-  double? voteAverage;
   int? voteCount;
 
-  MovieSimple({
+  MovieSimpleModel({
+    super.backdropPath,
+    super.genreIds,
+    super.id,
+    super.overview,
+    super.posterPath,
+    super.releaseDate,
+    super.title,
+    super.name,
+    super.voteAverage,
     this.adult,
-    this.backdropPath,
-    this.genreIds,
-    this.id,
     this.originalLanguage,
     this.originalTitle,
-    this.overview,
     this.popularity,
-    this.posterPath,
-    this.releaseDate,
-    this.title,
-    this.name,
     this.video,
-    this.voteAverage,
     this.voteCount,
   });
 
-  MovieSimple copyWith({
+  MovieSimpleModel copyWith({
     bool? adult,
     String? backdropPath,
     List<int>? genreIds,
@@ -53,7 +45,7 @@ class MovieSimple {
     bool? video,
     double? voteAverage,
     int? voteCount,
-  }) => MovieSimple(
+  }) => MovieSimpleModel(
     adult: adult ?? this.adult,
     backdropPath: backdropPath ?? this.backdropPath,
     genreIds: genreIds ?? this.genreIds,
@@ -71,36 +63,37 @@ class MovieSimple {
     voteCount: voteCount ?? this.voteCount,
   );
 
-  factory MovieSimple.fromJson(String str) =>
-      MovieSimple.fromMap(json.decode(str));
+  factory MovieSimpleModel.fromJson(String str) =>
+      MovieSimpleModel.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory MovieSimple.fromMap(Map<String, dynamic> json) => MovieSimple(
-    adult: json["adult"],
-    backdropPath: json["backdrop_path"] == null
-        ? null
-        : Environment.production.mediaUrl + json["backdrop_path"],
-    genreIds: json["genre_ids"] == null
-        ? []
-        : List<int>.from(json["genre_ids"]!.map((x) => x)),
-    id: json["id"],
-    originalLanguage: json["original_language"],
-    originalTitle: json["original_title"],
-    overview: json["overview"],
-    popularity: json["popularity"]?.toDouble(),
-    posterPath: json["poster_path"] == null
-        ? null
-        : Environment.production.mediaUrl + json["poster_path"],
-    releaseDate: json["release_date"] == null || json["release_date"] == ""
-        ? null
-        : DateTime.parse(json["release_date"]),
-    title: json["title"],
-    name: json["name"],
-    video: json["video"],
-    voteAverage: json["vote_average"]?.toDouble(),
-    voteCount: json["vote_count"],
-  );
+  factory MovieSimpleModel.fromMap(Map<String, dynamic> json) =>
+      MovieSimpleModel(
+        adult: json["adult"],
+        backdropPath: json["backdrop_path"] == null
+            ? null
+            : Environment.production.mediaUrl + json["backdrop_path"],
+        genreIds: json["genre_ids"] == null
+            ? []
+            : List<int>.from(json["genre_ids"]!.map((x) => x)),
+        id: json["id"],
+        originalLanguage: json["original_language"],
+        originalTitle: json["original_title"],
+        overview: json["overview"],
+        popularity: json["popularity"]?.toDouble(),
+        posterPath: json["poster_path"] == null
+            ? null
+            : Environment.production.mediaUrl + json["poster_path"],
+        releaseDate: json["release_date"] == null || json["release_date"] == ""
+            ? null
+            : DateTime.parse(json["release_date"]),
+        title: json["title"],
+        name: json["name"],
+        video: json["video"],
+        voteAverage: json["vote_average"]?.toDouble(),
+        voteCount: json["vote_count"],
+      );
 
   Map<String, dynamic> toMap() => {
     "adult": adult,

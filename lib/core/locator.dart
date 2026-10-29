@@ -2,16 +2,14 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
 import '../presentation/bloc/home/home_cubit.dart';
+import '../presentation/controllers/home_controller.dart';
 import '../presentation/controllers/login_controller.dart';
-import './services/auth_service.dart';
-import './services/movie_service.dart';
-import './services/tv_service.dart';
-import '../data/datasources/auth_remote_datasource.dart';
-import '../data/datasources/auth_remote_datasource_impl.dart';
-import '../data/datasources/movie_remote_datasource.dart';
-import '../data/datasources/movie_remote_datasource_impl.dart';
-import '../data/datasources/tv_remote_datasource.dart';
-import '../data/datasources/tv_remote_datasource_impl.dart';
+import '../data/datasources/data/auth_data.dart';
+import '../data/datasources/implementations/auth_implementation.dart';
+import '../data/datasources/data/movie_data.dart';
+import '../data/datasources/implementations/movie_implementation.dart';
+import '../data/datasources/data/tv_data.dart';
+import '../data/datasources/implementations/tv_implementation.dart';
 import '../data/repositories/auth_repository_impl.dart';
 import '../data/repositories/movie_repository_impl.dart';
 import '../data/repositories/tv_repository_impl.dart';
@@ -19,44 +17,47 @@ import '../domain/repositories/auth_repository.dart';
 import '../domain/repositories/movie_repository.dart';
 import '../domain/repositories/tv_repository.dart';
 import '../domain/usecases/get_current_user_usecase.dart';
+import '../domain/usecases/get_movie_crew_usecase.dart';
+import '../domain/usecases/get_movie_details_usecase.dart';
 import '../domain/usecases/get_movies_usecase.dart';
+import '../domain/usecases/get_tv_show_crew_usecase.dart';
+import '../domain/usecases/get_tv_show_details_usecase.dart';
 import '../domain/usecases/get_tv_shows_usecase.dart';
 import '../domain/usecases/login_usecase.dart';
 import '../domain/usecases/logout_usecase.dart';
 import '../domain/usecases/search_movies_usecase.dart';
 import '../domain/usecases/search_tv_shows_usecase.dart';
-import 'shared/env.dart';
 
 final getIt = GetIt.instance;
 
 void setupLocator() {
   // Datasources
-  getIt.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(),
+  getIt.registerLazySingleton<AuthData>(
+    () => AuthImplementation(),
   );
 
-  getIt.registerLazySingleton<MovieRemoteDataSource>(
-    () => MovieRemoteDataSourceImpl(),
+  getIt.registerLazySingleton<MovieData>(
+    () => MovieImplementation(),
   );
 
-  getIt.registerLazySingleton<TvRemoteDataSource>(
-    () => TvRemoteDataSourceImpl(),
+  getIt.registerLazySingleton<TvData>(
+    () => TvImplementation(),
   );
 
   // Repositories
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
-      remoteDataSource: getIt<AuthRemoteDataSource>(),
+      remoteDataSource: getIt<AuthData>(),
       storage: const FlutterSecureStorage(),
     ),
   );
 
   getIt.registerLazySingleton<MovieRepository>(
-    () => MovieRepositoryImpl(remoteDataSource: getIt<MovieRemoteDataSource>()),
+    () => MovieRepositoryImpl(remoteDataSource: getIt<MovieData>()),
   );
 
   getIt.registerLazySingleton<TvRepository>(
-    () => TvRepositoryImpl(remoteDataSource: getIt<TvRemoteDataSource>()),
+    () => TvRepositoryImpl(remoteDataSource: getIt<TvData>()),
   );
 
   // Use Cases
@@ -88,18 +89,27 @@ void setupLocator() {
     () => SearchTvShowsUseCase(getIt<TvRepository>()),
   );
 
+  getIt.registerFactory<GetMovieCrewUseCase>(
+    () => GetMovieCrewUseCase(getIt<MovieRepository>()),
+  );
+
+  getIt.registerFactory<GetMovieDetailsUseCase>(
+    () => GetMovieDetailsUseCase(getIt<MovieRepository>()),
+  );
+
+  getIt.registerFactory<GetTvShowCrewUseCase>(
+    () => GetTvShowCrewUseCase(getIt<TvRepository>()),
+  );
+
+  getIt.registerFactory<GetTvShowDetailsUseCase>(
+    () => GetTvShowDetailsUseCase(getIt<TvRepository>()),
+  );
+
   // Controllers
-  getIt.registerFactory<LoginController>(() => LoginController());
+  getIt.registerLazySingleton<LoginController>(() => LoginController());
+
+  getIt.registerFactory<HomeController>(() => HomeController());
 
   // Cubits
   getIt.registerFactory<HomeCubit>(() => HomeCubit());
-
-  // Serviços legados (usados por cubits de detalhes)
-  getIt.registerLazySingleton<AuthService>(
-    () => AuthService(accessToken: Environment.production.token),
-  );
-
-  getIt.registerLazySingleton<MovieService>(() => MovieService());
-
-  getIt.registerLazySingleton<TvService>(() => TvService());
 }

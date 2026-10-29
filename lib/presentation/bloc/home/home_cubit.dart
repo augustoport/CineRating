@@ -77,8 +77,8 @@ class HomeCubit extends Cubit<HomeStates> {
     }
   }
 
-  MovieSimple _mapToModel(Movie movie) {
-    return MovieSimple(
+  Movie _mapToModel(Movie movie) {
+    return Movie(
       id: movie.id,
       title: movie.title,
       name: movie.name,
@@ -91,9 +91,10 @@ class HomeCubit extends Cubit<HomeStates> {
     );
   }
 
-  MovieSimple _mapToModelTV(TvShow tvShow) {
-    return MovieSimple(
+  Movie _mapToModelTV(TvShow tvShow) {
+    return Movie(
       id: tvShow.id,
+      title: tvShow.name,
       name: tvShow.name,
       overview: tvShow.overview,
       posterPath: tvShow.posterPath,

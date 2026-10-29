@@ -9,17 +9,17 @@ class TvService {
   final url = Environment.production.baseUrl;
   final token = Environment.production.token;
 
-  Future<List<MovieSimple>?> getTvShows() async {
+  Future<List<MovieSimpleModel>?> getTvShows() async {
     try {
       final Dio dio = Dio();
       dio.options.headers["Authorization"] = "Bearer $token";
 
       final res = await dio.get('$url/discover/tv');
 
-      List<MovieSimple> tvShows = [];
+      List<MovieSimpleModel> tvShows = [];
 
       res.data['results'].forEach((m) {
-        final tvShow = MovieSimple.fromMap(m);
+        final tvShow = MovieSimpleModel.fromMap(m);
         tvShows.add(tvShow);
       });
 
@@ -29,7 +29,7 @@ class TvService {
     }
   }
 
-  Future<List<MovieSimple>?> getTvShowByName({required String show}) async {
+  Future<List<MovieSimpleModel>?> getTvShowByName({required String show}) async {
     try {
       final Dio dio = Dio();
       dio.options.headers["Authorization"] = "Bearer $token";
@@ -39,10 +39,10 @@ class TvService {
         queryParameters: {"query": show, "language": "en-US;pt-BR"},
       );
 
-      List<MovieSimple> tvShows = [];
+      List<MovieSimpleModel> tvShows = [];
 
       res.data['results'].forEach((m) {
-        final tvShow = MovieSimple.fromMap(m);
+        final tvShow = MovieSimpleModel.fromMap(m);
         tvShows.add(tvShow);
       });
 
@@ -61,9 +61,7 @@ class TvService {
 
       final res = await dio.get('$url/tv/$serieId');
 
-      TvShowModel tvshow = TvShowModel();
-
-      tvshow = TvShowModel.fromMap(res.data);
+      final tvshow = TvShowModel.fromMap(res.data);
 
       return tvshow;
     } on DioException {

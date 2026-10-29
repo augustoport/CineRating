@@ -11,11 +11,12 @@ class LoginController extends ChangeNotifier {
   TextEditingController passwordController = TextEditingController();
 
   bool isLoading = false;
+  bool loadingDrawer = false;
   User? currentUser;
 
-  final LoginUseCase _loginUseCase = getIt<LoginUseCase>();
-  final GetCurrentUserUseCase _getCurrentUserUseCase = getIt<GetCurrentUserUseCase>();
-  final LogoutUseCase _logoutUseCase = getIt<LogoutUseCase>();
+  final _loginUseCase = getIt<LoginUseCase>();
+  final _getCurrentUserUseCase = getIt<GetCurrentUserUseCase>();
+  final _logoutUseCase = getIt<LogoutUseCase>();
 
   Future<bool> login() async {
     isLoading = true;
@@ -39,9 +40,17 @@ class LoginController extends ChangeNotifier {
   }
 
   Future<void> checkExistingSession() async {
-    final user = await _getCurrentUserUseCase();
-    if (user != null) {
-      currentUser = user;
+    try {
+      loadingDrawer = true;
+      notifyListeners();
+
+      final user = await _getCurrentUserUseCase();
+      if (user != null) {
+        currentUser = user;
+        notifyListeners();
+      }
+    } finally {
+      loadingDrawer = false;
       notifyListeners();
     }
   }

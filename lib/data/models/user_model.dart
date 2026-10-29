@@ -1,24 +1,21 @@
-class User {
-  final int id;
-  final String username;
-  final String name;
-  final Avatar avatar;
-  final String sessionId;
+import '../../core/shared/env.dart';
+import '../../domain/entities/user.dart';
 
-  User({
-    required this.id,
-    required this.username,
-    required this.name,
-    required this.avatar,
-    required this.sessionId,
+class UserModel extends User {
+  UserModel({
+    required super.id,
+    required super.username,
+    required super.name,
+    required super.avatar,
+    required super.sessionId,
   });
 
-  factory User.fromJson(Map<String, dynamic> json, String sessionId) {
-    return User(
+  factory UserModel.fromJson(Map<String, dynamic> json, String sessionId) {
+    return UserModel(
       id: json['id'],
       username: json['username'],
       name: json['name'],
-      avatar: Avatar.fromJson(json['avatar']),
+      avatar: AvatarModel.fromJson(json['avatar']),
       sessionId: sessionId,
     );
   }
@@ -28,54 +25,26 @@ class User {
       'id': id,
       'username': username,
       'name': name,
-      'avatar': avatar.toJson(),
+      'avatar': AvatarModel(
+        gravatar: avatar?.gravatar ?? '',
+        tmdb: avatar?.tmdb ?? '',
+      ).toJson(),
       'sessionId': sessionId,
     };
   }
 }
 
-class Avatar {
-  final Gravatar gravatar;
-  final Tmdb tmdb;
+class AvatarModel extends Avatar {
+  AvatarModel({required super.gravatar, required super.tmdb});
 
-  Avatar({required this.gravatar, required this.tmdb});
-
-  factory Avatar.fromJson(Map<String, dynamic> json) {
-    return Avatar(
-      gravatar: Gravatar.fromJson(json['gravatar']),
-      tmdb: Tmdb.fromJson(json['tmdb']),
+  factory AvatarModel.fromJson(Map<String, dynamic> json) {
+    return AvatarModel(
+      gravatar: Environment.production.mediaUrl + json['gravatar']['hash'],
+      tmdb: Environment.production.mediaUrl + json['tmdb']['avatar_path'],
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'gravatar': gravatar.toJson(), 'tmdb': tmdb.toJson()};
-  }
-}
-
-class Gravatar {
-  final String? hash;
-
-  Gravatar({this.hash});
-
-  factory Gravatar.fromJson(Map<String, dynamic> json) {
-    return Gravatar(hash: json['hash']);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'hash': hash};
-  }
-}
-
-class Tmdb {
-  final String? avatarPath;
-
-  Tmdb({this.avatarPath});
-
-  factory Tmdb.fromJson(Map<String, dynamic> json) {
-    return Tmdb(avatarPath: json['avatar_path']);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'avatar_path': avatarPath};
+    return {'gravatar': gravatar, 'tmdb': tmdb};
   }
 }
